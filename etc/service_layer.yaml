@@ -1,0 +1,33 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+
+    workbench\webb\CommandBus\CommandBusInterface:
+        class: workbench\webb\CommandBus\CommandBus
+
+    League\Tactician\CommandBus:
+        class: ~
+        arguments:
+            -
+                - '@workbench\webb\CommandBus\Helper\LoggingMiddleware'
+                - '@League\Tactician\Handler\CommandHandlerMiddleware'
+
+    League\Tactician\Handler\CommandHandlerMiddleware:
+        class: ~
+        arguments:
+            - '@League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor'
+            - '@League\Tactician\Handler\Locator\InMemoryLocator'
+            - '@League\Tactician\Handler\MethodNameInflector\HandleInflector'
+
+    League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor:
+        class: ~
+
+    League\Tactician\Handler\Locator\InMemoryLocator:
+        class: ~
+        #arguments:
+        #    -
+        #        workbench\webb\CommandBus\AddDonor: '@workbench\webb\CommandBus\AddDonorHandler'
+
+    League\Tactician\Handler\MethodNameInflector\HandleInflector:
+        class: ~

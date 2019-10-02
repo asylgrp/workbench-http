@@ -1,0 +1,106 @@
+parameters:
+    env(WORKBENCH_INI): 'workbench.ini'
+
+imports:
+    - { resource: event_dispatcher.yaml }
+    - { resource: service_layer.yaml }
+
+services:
+    _defaults:
+        public: false
+        autowire: true
+
+    workbench\webb\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection/ProjectServiceContainer.php}'
+
+    Psr\Http\Server\RequestHandlerInterface:
+        class: inroutephp\inroute\Runtime\Middleware\Pipeline
+        public: true
+        arguments:
+            - '@workbench\webb\Http\Middleware\ExceptionLogger'
+            - '@Middlewares\TrailingSlash'
+            - '@Middlewares\Robots'
+            - '@workbench\webb\Http\HttpRouter'
+
+    workbench\webb\Http\HttpRouter:
+        class: ~
+        calls:
+            - method: setContainer
+              arguments: ['@Psr\Container\ContainerInterface']
+
+    Middlewares\Robots:
+        class: ~
+        arguments: [false]
+
+    Middlewares\TrailingSlash: ~
+
+    Psr\Http\Message\ResponseFactoryInterface:
+        class: Zend\Diactoros\ResponseFactory
+        public: true
+
+    Psr\Container\ContainerInterface:
+        class: workbench\webb\DependencyInjection\ProjectServiceContainer
+
+    Psr\Log\LoggerInterface:
+        factory: workbench\webb\Utils\LoggerFactory:createLogger
+        arguments:
+            - "@=service('ini').getConfig('log_file')"
+            - "@=service('ini').getConfig('log_level')"
+            - "@=service('ini').getConfig('log_format')"
+
+    ini:
+        alias: workbench\webb\Config\ConfigManager
+        public: true
+
+    workbench\webb\Config\ConfigManager:
+        class: ~
+        arguments: ['@base_dir_repository']
+        configurator: 'workbench\webb\Config\IniFileLoader:loadIniFile'
+
+    base_dir_repository:
+        class: workbench\webb\Config\ArrayRepository
+        arguments: [base_dir: "@=service('base_dir_reader').getBaseDir()"]
+
+    base_dir_reader:
+        class: workbench\webb\Config\BaseDirReader
+        arguments: ['%env(WORKBENCH_INI)%']
+
+    workbench\webb\Config\IniFileLoader:
+        class: ~
+        arguments: ['%env(WORKBENCH_INI)%']
+
+    #workbench\webb\Db\DriverFactoryInterface:
+    #    factory: 'workbench\webb\Db\DriverFactoryCollection:getDriverFactory'
+    #    arguments: ["@=service('ini').getConfig('db_driver')"]
+
+    #workbench\webb\Db\DriverInterface:
+    #    factory: 'workbench\webb\Db\DriverFactoryInterface:createDriver'
+    #    arguments: ["@=service('ini').getConfig('db_dsn')"]
+    #    lazy: true
+
+    #workbench\webb\Db\DonorEventStoreInterface:
+    #    factory: 'workbench\webb\Db\DriverInterface:getDonorEventStore'
+    #    lazy: true
+
+    #workbench\webb\Db\DonorRepositoryInterface:
+    #    factory: 'workbench\webb\Db\DriverInterface:getDonorRepository'
+    #    lazy: true
+
+    #workbench\webb\Db\DonorQueryInterface:
+    #    class: workbench\webb\Db\DonorQueryDecorator
+    #    arguments: ['@workbench\webb\Db\DonorRepositoryInterface']
+    #    lazy: true
+
+    #workbench\webb\Db\ImportHistoryInterface:
+    #    factory: 'workbench\webb\Db\DriverInterface:getImportHistory'
+    #    lazy: true
+
+    Money\MoneyFormatter:
+        class: Money\Formatter\DecimalMoneyFormatter
+
+    Money\MoneyParser:
+        class: Money\Parser\DecimalMoneyParser
+
+    Money\Currencies:
+        class: Money\Currencies\ISOCurrencies

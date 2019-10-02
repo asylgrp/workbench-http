@@ -1,0 +1,6 @@
+suites:
+    default_suite:
+        namespace: workbench\webb
+        psr4_prefix: workbench\webb
+
+formatter.name: dot

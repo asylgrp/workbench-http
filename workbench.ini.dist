@@ -1,0 +1,27 @@
+; References encolsed in % will be resolved by parser
+
+; The name of the organization.
+org_name = "VALUE REQUIRED"
+
+; Base directory setting
+; Can be omitted, defaults to the directory of workbench.ini
+; base_dir = "path/to/dir"
+
+; Database driver to use, currently only 'json' is supported
+db_driver = json
+
+; Data Source Name, the information required to connect to the database
+; Values are driver specific
+db_dsn = "%base_dir%/data"
+
+; Directory where decisions are stored
+decisions_dir = "%base_dir%/decisions"
+
+; Internal log file
+log_file = "%base_dir%/workbench.log"
+
+; PSR-3 log level (error/warning/notice/info/debug)
+log_level = "notice"
+
+; Log entry format
+log_format = "[{date}] [{level}] {message} {context}"

@@ -1,0 +1,9 @@
+/vendor
+/vendor-bin
+/composer.phar
+/server.PID
+/server.root
+/workbench-webb.zip
+/*.local*
+/.php_cs.cache
+/.php_cs
