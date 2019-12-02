@@ -6,10 +6,7 @@ namespace workbench\webb\Config;
 
 final class ArrayRepository implements RepositoryInterface
 {
-    /**
-     * @var array
-     */
-    private $configs;
+    private array $configs;
 
     public function __construct(array $configs)
     {

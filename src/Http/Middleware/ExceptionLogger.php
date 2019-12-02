@@ -13,15 +13,8 @@ use Psr\Log\LoggerInterface;
 
 final class ExceptionLogger implements MiddlewareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private LoggerInterface $logger;
+    private ResponseFactoryInterface $responseFactory;
 
     public function __construct(LoggerInterface $logger, ResponseFactoryInterface $responseFactory)
     {

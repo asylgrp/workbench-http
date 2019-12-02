@@ -8,10 +8,7 @@ use workbench\webb\Exception\InvalidConfigException;
 
 final class IniRepository implements RepositoryInterface
 {
-    /**
-     * @var array
-     */
-    private $configs;
+    private array $configs;
 
     public function __construct(string $ini)
     {

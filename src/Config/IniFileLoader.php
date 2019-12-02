@@ -8,10 +8,7 @@ use workbench\webb\Exception\InvalidConfigException;
 
 final class IniFileLoader
 {
-    /**
-     * @var string
-     */
-    private $iniFileName;
+    private string $iniFileName;
 
     public function __construct(string $iniFileName)
     {

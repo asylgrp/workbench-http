@@ -116,7 +116,7 @@ vendor/installed: composer.lock
 	touch $@
 
 vendor-bin/installed:
-	$(COMPOSER_CMD) bin phpspec require phpspec/phpspec:^5
+	$(COMPOSER_CMD) bin phpspec require phpspec/phpspec:^6
 	$(COMPOSER_CMD) bin behat require behat/behat:^3 behat/mink-extension:^2 behat/mink-goutte-driver:^1
 	$(COMPOSER_CMD) bin phpstan require "phpstan/phpstan:<2"
 	$(COMPOSER_CMD) bin phpcs require squizlabs/php_codesniffer:^3
