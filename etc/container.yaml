@@ -43,7 +43,7 @@ services:
         class: workbench\webb\DependencyInjection\ProjectServiceContainer
 
     Psr\Log\LoggerInterface:
-        factory: workbench\webb\Utils\LoggerFactory:createLogger
+        factory: ['@workbench\webb\Utils\LoggerFactory', createLogger]
         arguments:
             - "@=service('ini').getConfig('log_file')"
             - "@=service('ini').getConfig('log_level')"
@@ -56,7 +56,7 @@ services:
     workbench\webb\Config\ConfigManager:
         class: ~
         arguments: ['@base_dir_repository']
-        configurator: 'workbench\webb\Config\IniFileLoader:loadIniFile'
+        configurator: ['@workbench\webb\Config\IniFileLoader', loadIniFile]
 
     base_dir_repository:
         class: workbench\webb\Config\ArrayRepository
@@ -69,32 +69,6 @@ services:
     workbench\webb\Config\IniFileLoader:
         class: ~
         arguments: ['%env(WORKBENCH_INI)%']
-
-    #workbench\webb\Db\DriverFactoryInterface:
-    #    factory: 'workbench\webb\Db\DriverFactoryCollection:getDriverFactory'
-    #    arguments: ["@=service('ini').getConfig('db_driver')"]
-
-    #workbench\webb\Db\DriverInterface:
-    #    factory: 'workbench\webb\Db\DriverFactoryInterface:createDriver'
-    #    arguments: ["@=service('ini').getConfig('db_dsn')"]
-    #    lazy: true
-
-    #workbench\webb\Db\DonorEventStoreInterface:
-    #    factory: 'workbench\webb\Db\DriverInterface:getDonorEventStore'
-    #    lazy: true
-
-    #workbench\webb\Db\DonorRepositoryInterface:
-    #    factory: 'workbench\webb\Db\DriverInterface:getDonorRepository'
-    #    lazy: true
-
-    #workbench\webb\Db\DonorQueryInterface:
-    #    class: workbench\webb\Db\DonorQueryDecorator
-    #    arguments: ['@workbench\webb\Db\DonorRepositoryInterface']
-    #    lazy: true
-
-    #workbench\webb\Db\ImportHistoryInterface:
-    #    factory: 'workbench\webb\Db\DriverInterface:getImportHistory'
-    #    lazy: true
 
     Money\MoneyFormatter:
         class: Money\Formatter\DecimalMoneyFormatter

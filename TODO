@@ -1,9 +1,6 @@
 TODO
 
-* DB? Do we need symfony/proxy-manager-bridge??
-
-* Building should support composer:platform, but maybe not set in composer.json??
-    some kind of build time settings system...
+* Strunta i INI och ladda allt med Dotenv istället...
 
 * CommandBus
     CreateContactPerson

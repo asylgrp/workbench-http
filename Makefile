@@ -16,6 +16,9 @@ SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
 ETC_FILES:=$(shell find etc/ -type f -name '*')
 HTTP_FILES:=$(shell find src/Http/ -type f -name '*.php' ! -path $(ROUTER))
 
+DEV_SERVER_HOST=localhost
+DEV_SERVER_PORT=8888
+
 .DEFAULT_GOAL=all
 
 .PHONY: all build clean
@@ -77,7 +80,7 @@ stop: $(SERVER_PID_FILE)
 $(SERVER_PID_FILE): vendor/installed
 	mkdir -p $(DOCUMENT_ROOT)
 	cp workbench.ini.dist $(WORKBENCH_INI)
-	{ php -S localhost:8080 -t $(DOCUMENT_ROOT) public/index.php & echo $$! > $@; }
+	{ php -S $(DEV_SERVER_HOST):$(DEV_SERVER_PORT) -t $(DOCUMENT_ROOT) public/index.php & echo $$! > $@; }
 
 #
 # Tests and analysis

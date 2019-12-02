@@ -15,7 +15,6 @@ $target = 'workbench\webb\DependencyInjection\ProjectServiceContainer';
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -33,8 +32,6 @@ $loader->load(basename($source));
 $dic->compile();
 
 $dumper = new PhpDumper($dic);
-
-$dumper->setProxyDumper(new ProxyDumper);
 
 $targetParts = explode('\\', $target);
 

@@ -117,10 +117,8 @@ class ProjectServiceContainer extends Container
         return $instance;
     }
 
-    public function getParameter($name)
+    public function getParameter(string $name)
     {
-        $name = (string) $name;
-
         if (!(isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || array_key_exists($name, $this->parameters))) {
             throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
         }
@@ -131,14 +129,12 @@ class ProjectServiceContainer extends Container
         return $this->parameters[$name];
     }
 
-    public function hasParameter($name): bool
+    public function hasParameter(string $name): bool
     {
-        $name = (string) $name;
-
         return isset($this->parameters[$name]) || isset($this->loadedDynamicParameters[$name]) || array_key_exists($name, $this->parameters);
     }
 
-    public function setParameter($name, $value): void
+    public function setParameter(string $name, $value): void
     {
         throw new LogicException('Impossible to call set() on a frozen ParameterBag.');
     }
