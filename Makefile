@@ -16,9 +16,6 @@ SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
 ETC_FILES:=$(shell find etc/ -type f -name '*')
 HTTP_FILES:=$(shell find src/Http/ -type f -name '*.php' ! -path $(ROUTER))
 
-DEV_SERVER_HOST=localhost
-DEV_SERVER_PORT=8888
-
 .DEFAULT_GOAL=all
 
 .PHONY: all build clean
@@ -66,21 +63,21 @@ security_check: deps
 
 .PHONY: start stop
 
-DOCUMENT_ROOT=server.root
-SERVER_PID_FILE=server.PID
-export WORKBENCH_INI=$(DOCUMENT_ROOT)/workbench.ini
+DEV_SERVER_HOST=localhost
+DEV_SERVER_PORT=8888
+export WORKB_BASE_DIR=server.root
+DEV_SERVER_PID_FILE=server.PID
 
-start: $(SERVER_PID_FILE)
+start: $(DEV_SERVER_PID_FILE)
 
-stop: $(SERVER_PID_FILE)
+stop: $(DEV_SERVER_PID_FILE)
 	-kill `cat $<`
 	rm $<
-	rm -rf $(DOCUMENT_ROOT)
+	rm -rf $(WORKB_BASE_DIR)
 
-$(SERVER_PID_FILE): vendor/installed
-	mkdir -p $(DOCUMENT_ROOT)
-	cp workbench.ini.dist $(WORKBENCH_INI)
-	{ php -S $(DEV_SERVER_HOST):$(DEV_SERVER_PORT) -t $(DOCUMENT_ROOT) public/index.php & echo $$! > $@; }
+$(DEV_SERVER_PID_FILE): vendor/installed
+	mkdir -p $(WORKB_BASE_DIR)
+	{ php -S $(DEV_SERVER_HOST):$(DEV_SERVER_PORT) -t $(WORKB_BASE_DIR) public/index.php & echo $$! > $@; }
 
 #
 # Tests and analysis

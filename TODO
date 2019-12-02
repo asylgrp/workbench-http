@@ -1,6 +1,18 @@
 TODO
 
-* Strunta i INI och ladda allt med Dotenv istället...
+Middlewares:
+    * Stoppa configs i egen yaml???
+
+    * Base http path
+        https://github.com/middlewares/base-path
+        En http base path kan vara satt i ini.
+        Som en en sådan används kan det fungera automatiskt i appen...
+
+    * https://github.com/middlewares/https
+        kanske wrapp i egen middleware för att kunna stänga av och på via ini directive...
+
+    * https://github.com/middlewares/access-log
+        även ha med vilken response code det blev??
 
 * CommandBus
     CreateContactPerson
@@ -10,14 +22,3 @@ TODO
     DeleteClaim
     CreateDecision
     DeleteDecision
-
-* Base http path
-    https://github.com/middlewares/base-path
-    En http base path kan vara satt i ini.
-    Som en en sådan används kan det fungera automatiskt i appen...
-
-* https://github.com/middlewares/https
-    kanske wrapp i egen middleware för att kunna stänga av och på via ini directive...
-
-* https://github.com/middlewares/access-log
-    även ha med vilken response code det blev??

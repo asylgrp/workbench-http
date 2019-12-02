@@ -29,7 +29,6 @@ class ProjectServiceContainer extends Container
         $this->methodMap = [
             'Psr\\Http\\Message\\ResponseFactoryInterface' => 'getResponseFactoryInterfaceService',
             'Psr\\Http\\Server\\RequestHandlerInterface' => 'getRequestHandlerInterfaceService',
-            'ini' => 'getIniService',
         ];
 
         $this->aliases = [];
@@ -64,14 +63,12 @@ class ProjectServiceContainer extends Container
             'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
             'Psr\\Log\\LoggerInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
-            'base_dir_reader' => true,
-            'base_dir_repository' => true,
             'workbench\\webb\\CommandBus\\CommandBusInterface' => true,
-            'workbench\\webb\\Config\\ArrayRepository' => true,
             'workbench\\webb\\Config\\BaseDirReader' => true,
             'workbench\\webb\\Config\\ConfigManager' => true,
             'workbench\\webb\\Config\\IniFileLoader' => true,
             'workbench\\webb\\Config\\IniRepository' => true,
+            'workbench\\webb\\Config\\RepositoryInterface' => true,
             'workbench\\webb\\Exception' => true,
             'workbench\\webb\\Exception\\InvalidConfigException' => true,
             'workbench\\webb\\Http\\HttpRouter' => true,
@@ -100,21 +97,7 @@ class ProjectServiceContainer extends Container
         $a = new \workbench\webb\Http\HttpRouter();
         $a->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
 
-        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger(($this->services['ini'] ?? $this->getIniService())->getConfig("log_file"), ($this->services['ini'] ?? $this->getIniService())->getConfig("log_level"), ($this->services['ini'] ?? $this->getIniService())->getConfig("log_format")), ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()))), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false), $a);
-    }
-
-    /**
-     * Gets the public 'ini' shared autowired service.
-     *
-     * @return \workbench\webb\Config\ConfigManager
-     */
-    protected function getIniService()
-    {
-        $this->services['ini'] = $instance = new \workbench\webb\Config\ConfigManager(new \workbench\webb\Config\ArrayRepository(['base_dir' => (new \workbench\webb\Config\BaseDirReader($this->getEnv('WORKBENCH_INI')))->getBaseDir()]));
-
-        (new \workbench\webb\Config\IniFileLoader($this->getEnv('WORKBENCH_INI')))->loadIniFile($instance);
-
-        return $instance;
+        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_LOG_FILE'), $this->getEnv('WORKB_LOG_LEVEL'), $this->getEnv('WORKB_LOG_FORMAT')), ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()))), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false), $a);
     }
 
     public function getParameter(string $name)
@@ -163,7 +146,12 @@ class ProjectServiceContainer extends Container
     protected function getDefaultParameters(): array
     {
         return [
-            'env(WORKBENCH_INI)' => 'workbench.ini',
+            'env(WORKB_ORG_NAME)' => 'Unknown organization',
+            'env(WORKB_BASE_DIR)' => '.',
+            'env(WORKB_DECISIONS_DIR)' => 'decisions',
+            'env(WORKB_LOG_FILE)' => 'workbench.log',
+            'env(WORKB_LOG_LEVEL)' => 'notice',
+            'env(WORKB_LOG_FORMAT)' => '[{date}] [{level}] {message} {context}',
         ];
     }
 }

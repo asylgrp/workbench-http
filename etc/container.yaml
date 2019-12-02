@@ -1,5 +1,10 @@
 parameters:
-    env(WORKBENCH_INI): 'workbench.ini'
+    env(WORKB_ORG_NAME): "Unknown organization"
+    env(WORKB_BASE_DIR): "."
+    env(WORKB_DECISIONS_DIR): "decisions"
+    env(WORKB_LOG_FILE): "workbench.log"
+    env(WORKB_LOG_LEVEL): "notice"
+    env(WORKB_LOG_FORMAT): "[{date}] [{level}] {message} {context}"
 
 imports:
     - { resource: event_dispatcher.yaml }
@@ -45,30 +50,9 @@ services:
     Psr\Log\LoggerInterface:
         factory: ['@workbench\webb\Utils\LoggerFactory', createLogger]
         arguments:
-            - "@=service('ini').getConfig('log_file')"
-            - "@=service('ini').getConfig('log_level')"
-            - "@=service('ini').getConfig('log_format')"
-
-    ini:
-        alias: workbench\webb\Config\ConfigManager
-        public: true
-
-    workbench\webb\Config\ConfigManager:
-        class: ~
-        arguments: ['@base_dir_repository']
-        configurator: ['@workbench\webb\Config\IniFileLoader', loadIniFile]
-
-    base_dir_repository:
-        class: workbench\webb\Config\ArrayRepository
-        arguments: [base_dir: "@=service('base_dir_reader').getBaseDir()"]
-
-    base_dir_reader:
-        class: workbench\webb\Config\BaseDirReader
-        arguments: ['%env(WORKBENCH_INI)%']
-
-    workbench\webb\Config\IniFileLoader:
-        class: ~
-        arguments: ['%env(WORKBENCH_INI)%']
+            - '%env(WORKB_BASE_DIR)%/%env(WORKB_LOG_FILE)%'
+            - '%env(WORKB_LOG_LEVEL)%'
+            - '%env(WORKB_LOG_FORMAT)%'
 
     Money\MoneyFormatter:
         class: Money\Formatter\DecimalMoneyFormatter
