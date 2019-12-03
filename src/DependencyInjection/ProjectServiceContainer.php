@@ -64,15 +64,11 @@ class ProjectServiceContainer extends Container
             'Psr\\Log\\LoggerInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
             'workbench\\webb\\CommandBus\\CommandBusInterface' => true,
-            'workbench\\webb\\Config\\BaseDirReader' => true,
-            'workbench\\webb\\Config\\ConfigManager' => true,
-            'workbench\\webb\\Config\\IniFileLoader' => true,
-            'workbench\\webb\\Config\\IniRepository' => true,
-            'workbench\\webb\\Config\\RepositoryInterface' => true,
             'workbench\\webb\\Exception' => true,
             'workbench\\webb\\Exception\\InvalidConfigException' => true,
             'workbench\\webb\\Http\\HttpRouter' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionLogger' => true,
+            'workbench\\webb\\Http\\Middleware\\ExceptionPrettifier' => true,
             'workbench\\webb\\Utils\\LoggerFactory' => true,
         ];
     }
@@ -94,10 +90,11 @@ class ProjectServiceContainer extends Container
      */
     protected function getRequestHandlerInterfaceService()
     {
-        $a = new \workbench\webb\Http\HttpRouter();
-        $a->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
+        $a = ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()));
+        $b = new \workbench\webb\Http\HttpRouter();
+        $b->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
 
-        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_LOG_FILE'), $this->getEnv('WORKB_LOG_LEVEL'), $this->getEnv('WORKB_LOG_FORMAT')), ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()))), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false), $a);
+        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_LOG_FILE'), $this->getEnv('WORKB_LOG_LEVEL'), $this->getEnv('WORKB_LOG_FORMAT')), $a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $b);
     }
 
     public function getParameter(string $name)

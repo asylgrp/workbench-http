@@ -1,12 +1,12 @@
 TODO
 
 Middlewares:
-    * Stoppa configs i egen yaml???
-
     * Base http path
         https://github.com/middlewares/base-path
         En http base path kan vara satt i ini.
         Som en en sådan används kan det fungera automatiskt i appen...
+
+        Lägg till enkelt behat test för länk som fungerar...
 
     * https://github.com/middlewares/https
         kanske wrapp i egen middleware för att kunna stänga av och på via ini directive...

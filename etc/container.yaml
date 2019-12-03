@@ -24,9 +24,16 @@ services:
         public: true
         arguments:
             - '@workbench\webb\Http\Middleware\ExceptionLogger'
+            - '@workbench\webb\Http\Middleware\ExceptionPrettifier'
             - '@Middlewares\TrailingSlash'
             - '@Middlewares\Robots'
             - '@workbench\webb\Http\HttpRouter'
+
+    Middlewares\TrailingSlash: ~
+
+    Middlewares\Robots:
+        class: ~
+        arguments: [false]
 
     workbench\webb\Http\HttpRouter:
         class: ~
@@ -34,18 +41,12 @@ services:
             - method: setContainer
               arguments: ['@Psr\Container\ContainerInterface']
 
-    Middlewares\Robots:
-        class: ~
-        arguments: [false]
-
-    Middlewares\TrailingSlash: ~
+    Psr\Container\ContainerInterface:
+        class: workbench\webb\DependencyInjection\ProjectServiceContainer
 
     Psr\Http\Message\ResponseFactoryInterface:
         class: Zend\Diactoros\ResponseFactory
         public: true
-
-    Psr\Container\ContainerInterface:
-        class: workbench\webb\DependencyInjection\ProjectServiceContainer
 
     Psr\Log\LoggerInterface:
         factory: ['@workbench\webb\Utils\LoggerFactory', createLogger]
