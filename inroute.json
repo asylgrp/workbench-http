@@ -1,6 +1,6 @@
 {
-    "source-dir": "src/Http",
-    "source-prefix": "workbench\\webb\\Http",
+    "source-dir": "src/Http/Route",
+    "source-prefix": "workbench\\webb\\Http\\Route",
     "target-filename": "src/Http/HttpRouter.php",
     "target-namespace": "workbench\\webb\\Http",
     "target-classname": "HttpRouter"

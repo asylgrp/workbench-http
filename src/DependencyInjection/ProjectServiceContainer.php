@@ -29,6 +29,7 @@ class ProjectServiceContainer extends Container
         $this->methodMap = [
             'Psr\\Http\\Message\\ResponseFactoryInterface' => 'getResponseFactoryInterfaceService',
             'Psr\\Http\\Server\\RequestHandlerInterface' => 'getRequestHandlerInterfaceService',
+            'workbench\\webb\\Http\\Route\\Index' => 'getIndexService',
         ];
 
         $this->aliases = [];
@@ -95,6 +96,16 @@ class ProjectServiceContainer extends Container
         $b->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
 
         return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_LOG_FILE'), $this->getEnv('WORKB_LOG_LEVEL'), $this->getEnv('WORKB_LOG_FORMAT')), $a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $b);
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Index' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Index
+     */
+    protected function getIndexService()
+    {
+        return $this->services['workbench\\webb\\Http\\Route\\Index'] = new \workbench\webb\Http\Route\Index();
     }
 
     public function getParameter(string $name)

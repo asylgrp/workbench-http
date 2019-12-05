@@ -17,5 +17,37 @@ final class HttpRouter implements \inroutephp\inroute\Runtime\HttpRouterInterfac
 
         $mapper = new \inroutephp\inroute\Runtime\Aura\RouteMapper($map);
 
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'index',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Index',
+            ],
+            'serviceMethod' => [
+                'index',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
     }
 }

@@ -19,6 +19,10 @@ services:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection/ProjectServiceContainer.php}'
 
+    workbench\webb\Http\Route\:
+        resource: '../src/Http/Route/*'
+        public: true
+
     Psr\Http\Server\RequestHandlerInterface:
         class: inroutephp\inroute\Runtime\Middleware\Pipeline
         public: true
