@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace workbench\webb\Http\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -14,12 +13,10 @@ use Psr\Log\LoggerInterface;
 final class ExceptionLogger implements MiddlewareInterface
 {
     private LoggerInterface $logger;
-    private ResponseFactoryInterface $responseFactory;
 
-    public function __construct(LoggerInterface $logger, ResponseFactoryInterface $responseFactory)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->responseFactory = $responseFactory;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -37,7 +34,7 @@ final class ExceptionLogger implements MiddlewareInterface
                 ]
             );
 
-            return $this->responseFactory->createResponse(500, 'Internal Server Error');
+            throw $e;
         }
     }
 }

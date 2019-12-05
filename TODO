@@ -1,19 +1,5 @@
 TODO
 
-Middlewares:
-    * Base http path
-        https://github.com/middlewares/base-path
-        En http base path kan vara satt i ini.
-        Som en en sådan används kan det fungera automatiskt i appen...
-
-        Lägg till enkelt behat test för länk som fungerar...
-
-    * https://github.com/middlewares/https
-        kanske wrapp i egen middleware för att kunna stänga av och på via ini directive...
-
-    * https://github.com/middlewares/access-log
-        även ha med vilken response code det blev??
-
 * CommandBus
     CreateContactPerson
     UpdateContactPerson

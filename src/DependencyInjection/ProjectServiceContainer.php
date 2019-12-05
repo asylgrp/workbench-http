@@ -55,6 +55,7 @@ class ProjectServiceContainer extends Container
             'League\\Tactician\\Handler\\CommandNameExtractor\\ClassNameExtractor' => true,
             'League\\Tactician\\Handler\\Locator\\InMemoryLocator' => true,
             'League\\Tactician\\Handler\\MethodNameInflector\\HandleInflector' => true,
+            'Middlewares\\AccessLog' => true,
             'Middlewares\\Robots' => true,
             'Middlewares\\TrailingSlash' => true,
             'Money\\Currencies' => true,
@@ -62,15 +63,18 @@ class ProjectServiceContainer extends Container
             'Money\\MoneyParser' => true,
             'Psr\\Container\\ContainerInterface' => true,
             'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
-            'Psr\\Log\\LoggerInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
+            'access_logger' => true,
+            'access_logger_stream' => true,
+            'error_logger' => true,
+            'error_logger_stream' => true,
             'workbench\\webb\\CommandBus\\CommandBusInterface' => true,
             'workbench\\webb\\Exception' => true,
             'workbench\\webb\\Exception\\InvalidConfigException' => true,
             'workbench\\webb\\Http\\HttpRouter' => true,
+            'workbench\\webb\\Http\\Middleware\\ExceptionEndpoint' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionLogger' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionPrettifier' => true,
-            'workbench\\webb\\Utils\\LoggerFactory' => true,
         ];
     }
 
@@ -92,10 +96,17 @@ class ProjectServiceContainer extends Container
     protected function getRequestHandlerInterfaceService()
     {
         $a = ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()));
-        $b = new \workbench\webb\Http\HttpRouter();
-        $b->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
+        $b = new \Monolog\Logger('error');
+        $b->pushHandler(new \Monolog\Handler\StreamHandler($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_ERROR_LOG'), $this->getEnv('WORKB_ERROR_LEVEL')));
+        $c = new \Monolog\Logger('access');
+        $c->pushHandler(new \Monolog\Handler\StreamHandler($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_ACCESS_LOG')));
 
-        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionLogger((new \workbench\webb\Utils\LoggerFactory())->createLogger($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_LOG_FILE'), $this->getEnv('WORKB_LOG_LEVEL'), $this->getEnv('WORKB_LOG_FORMAT')), $a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $b);
+        $d = new \Middlewares\AccessLog($c);
+        $d->format($this->getEnv('WORKB_ACCESS_FORMAT'));
+        $e = new \workbench\webb\Http\HttpRouter();
+        $e->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
+
+        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionEndpoint($a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \workbench\webb\Http\Middleware\ExceptionLogger($b), $d, new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $e);
     }
 
     /**
@@ -157,9 +168,10 @@ class ProjectServiceContainer extends Container
             'env(WORKB_ORG_NAME)' => 'Unknown organization',
             'env(WORKB_BASE_DIR)' => '.',
             'env(WORKB_DECISIONS_DIR)' => 'decisions',
-            'env(WORKB_LOG_FILE)' => 'workbench.log',
-            'env(WORKB_LOG_LEVEL)' => 'notice',
-            'env(WORKB_LOG_FORMAT)' => '[{date}] [{level}] {message} {context}',
+            'env(WORKB_ACCESS_LOG)' => 'access-log.txt',
+            'env(WORKB_ACCESS_FORMAT)' => '%h %u %t %T "%r" %>s %b',
+            'env(WORKB_ERROR_LOG)' => 'error-log.txt',
+            'env(WORKB_ERROR_LEVEL)' => 'notice',
         ];
     }
 }

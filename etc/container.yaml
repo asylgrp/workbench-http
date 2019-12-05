@@ -2,9 +2,10 @@ parameters:
     env(WORKB_ORG_NAME): "Unknown organization"
     env(WORKB_BASE_DIR): "."
     env(WORKB_DECISIONS_DIR): "decisions"
-    env(WORKB_LOG_FILE): "workbench.log"
-    env(WORKB_LOG_LEVEL): "notice"
-    env(WORKB_LOG_FORMAT): "[{date}] [{level}] {message} {context}"
+    env(WORKB_ACCESS_LOG): "access-log.txt"
+    env(WORKB_ACCESS_FORMAT): '%h %u %t %T "%r" %>s %b'
+    env(WORKB_ERROR_LOG): "error-log.txt"
+    env(WORKB_ERROR_LEVEL): "notice"
 
 imports:
     - { resource: event_dispatcher.yaml }
@@ -27,11 +28,46 @@ services:
         class: inroutephp\inroute\Runtime\Middleware\Pipeline
         public: true
         arguments:
-            - '@workbench\webb\Http\Middleware\ExceptionLogger'
+            - '@workbench\webb\Http\Middleware\ExceptionEndpoint'
             - '@workbench\webb\Http\Middleware\ExceptionPrettifier'
+            - '@workbench\webb\Http\Middleware\ExceptionLogger'
+            - '@Middlewares\AccessLog'
             - '@Middlewares\TrailingSlash'
             - '@Middlewares\Robots'
             - '@workbench\webb\Http\HttpRouter'
+
+    workbench\webb\Http\Middleware\ExceptionLogger:
+        class: ~
+        arguments: ['@error_logger']
+
+    error_logger:
+        class: Monolog\Logger
+        arguments: ['error']
+        calls:
+            - method: pushHandler
+              arguments: ['@error_logger_stream']
+
+    error_logger_stream:
+        class: Monolog\Handler\StreamHandler
+        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_ERROR_LOG)%', '%env(WORKB_ERROR_LEVEL)%']
+
+    Middlewares\AccessLog:
+        class: ~
+        arguments: ['@access_logger']
+        calls:
+            - method: format
+              arguments: ['%env(WORKB_ACCESS_FORMAT)%']
+
+    access_logger:
+        class: Monolog\Logger
+        arguments: ['access']
+        calls:
+            - method: pushHandler
+              arguments: ['@access_logger_stream']
+
+    access_logger_stream:
+        class: Monolog\Handler\StreamHandler
+        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_ACCESS_LOG)%']
 
     Middlewares\TrailingSlash: ~
 
@@ -51,13 +87,6 @@ services:
     Psr\Http\Message\ResponseFactoryInterface:
         class: Zend\Diactoros\ResponseFactory
         public: true
-
-    Psr\Log\LoggerInterface:
-        factory: ['@workbench\webb\Utils\LoggerFactory', createLogger]
-        arguments:
-            - '%env(WORKB_BASE_DIR)%/%env(WORKB_LOG_FILE)%'
-            - '%env(WORKB_LOG_LEVEL)%'
-            - '%env(WORKB_LOG_FORMAT)%'
 
     Money\MoneyFormatter:
         class: Money\Formatter\DecimalMoneyFormatter
