@@ -1,5 +1,9 @@
 TODO
 
+* Economix
+    behöver kunna ändra även namn och kontonummer på contacts
+    men aldrig id...
+
 * CommandBus
 
     workbench\webb\CommandBus\Helper\LoggingMiddleware
@@ -12,5 +16,9 @@ TODO
 
     CreateClaim
     DeleteClaim
+    ClearClaims
     CreateDecision
     DeleteDecision
+
+    Commit
+    Rollback
