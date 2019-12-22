@@ -1,9 +1,15 @@
 TODO
 
 * CommandBus
-    CreateContactPerson
-    UpdateContactPerson
-    DeleteContactPerson
+
+    workbench\webb\CommandBus\Helper\LoggingMiddleware
+        ej definierad
+        se service_layer.yaml
+
+    workbench\webb\CommandBus\CommandBusInterface
+        behöver jag??
+        se service_layer.yaml
+
     CreateClaim
     DeleteClaim
     CreateDecision

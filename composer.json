@@ -25,7 +25,7 @@
         "ext-bcmath": "*",
         "ext-mbstring": "*",
         "ext-intl": "*",
-        "asylgrp/economix": "^1.1",
+        "asylgrp/economix": "^1.2",
         "byrokrat/banking": "^2.1",
         "byrokrat/id": "^2",
         "hanneskod/yaysondb": "^2.2",

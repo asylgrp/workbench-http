@@ -25,9 +25,11 @@ services:
 
     League\Tactician\Handler\Locator\InMemoryLocator:
         class: ~
-        #arguments:
-        #    -
-        #        workbench\webb\CommandBus\AddDonor: '@workbench\webb\CommandBus\AddDonorHandler'
+        arguments:
+            -
+                workbench\webb\CommandBus\CreateContactPerson: '@workbench\webb\CommandBus\CreateContactPersonHandler'
+                workbench\webb\CommandBus\DeleteContactPerson: '@workbench\webb\CommandBus\DeleteContactPersonHandler'
+                workbench\webb\CommandBus\UpdateContactPerson: '@workbench\webb\CommandBus\UpdateContactPersonHandler'
 
     League\Tactician\Handler\MethodNameInflector\HandleInflector:
         class: ~
