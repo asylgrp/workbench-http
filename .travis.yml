@@ -1,0 +1,15 @@
+sudo: false
+
+language: php
+
+php:
+    - 7.4
+
+install:
+    - make vendor/installed
+    - wget -O phive.phar https://phar.io/releases/phive.phar
+    - make tools/phpspec PHIVE_CMD="php phive.phar"
+    - make vendor/bin/behat
+
+script:
+    - make ci

@@ -1,11 +1,12 @@
-PHPSPEC=vendor/bin/phpspec
-BEHAT=vendor/bin/behat
-PHPSTAN=vendor/bin/phpstan
-PHPCS=vendor/bin/phpcs
-SECURITY_CHECKER=vendor/bin/security-checker
-INROUTE=vendor/bin/inroute
-
 COMPOSER_CMD=composer
+PHIVE_CMD=phive
+
+PHPSPEC_CMD=tools/phpspec
+BEHAT_CMD=vendor/bin/behat
+PHPSTAN_CMD=tools/phpstan
+PHPCS_CMD=tools/phpcs
+SECURITY_CHECKER_CMD=vendor/bin/security-checker
+INROUTE_CMD=vendor/bin/inroute
 
 TARGET=workbench-webb.zip
 
@@ -18,13 +19,17 @@ HTTP_FILES:=$(shell find src/Http/ -type f -name '*.php' ! -path $(ROUTER))
 
 .DEFAULT_GOAL=all
 
-.PHONY: all build clean
+.PHONY: all
+all: test analyze build
 
-all: test build
-
+.PHONY: build
 build: preconds $(TARGET)
 
-$(TARGET): deps $(CONTAINER) $(ROUTER) $(SRC_FILES) composer.lock
+.PHONY: preconds
+preconds: composer.lock $(SECURITY_CHECKER_CMD)
+	$(SECURITY_CHECKER_CMD) security:check composer.lock
+
+$(TARGET): vendor/installed $(CONTAINER) $(ROUTER) $(SRC_FILES)
 	#$(COMPOSER_CMD) install --prefer-dist --no-dev
 	# ...
 	#$(COMPOSER_CMD) install
@@ -32,44 +37,30 @@ $(TARGET): deps $(CONTAINER) $(ROUTER) $(SRC_FILES) composer.lock
 $(CONTAINER): vendor/installed $(ETC_FILES) $(SRC_FILES)
 	bin/build_container > $@
 
-$(ROUTER): vendor/installed $(HTTP_FILES)
-	$(INROUTE) build
+$(ROUTER): vendor/installed $(HTTP_FILES) $(INROUTE_CMD)
+	$(INROUTE_CMD) build
 
+.PHONY: clean
 clean: stop
 	rm $(TARGET) --interactive=no -f
 	rm $(CONTAINER) -f
 	rm $(ROUTER) -f
 	rm -rf vendor
 	rm -rf vendor-bin
+	rm -rf tools
 
-#
-# Build preconditions
-#
 
-.PHONY: preconds dependency_check security_check
-
-preconds: dependency_check security_check
-
-dependency_check: vendor/installed
-	$(COMPOSER_CMD) validate --strict
-	$(COMPOSER_CMD) outdated --strict --minor-only
-
-security_check: deps
-	$(SECURITY_CHECKER) security:check composer.lock
-
-#
 # Development webserver
-#
-
-.PHONY: start stop
 
 DEV_SERVER_HOST=localhost
-DEV_SERVER_PORT=8888
+DEV_SERVER_PORT=8000
 export WORKB_BASE_DIR=server.root
 DEV_SERVER_PID_FILE=server.PID
 
+.PHONY: start
 start: $(DEV_SERVER_PID_FILE)
 
+.PHONY: stop
 stop: $(DEV_SERVER_PID_FILE)
 	-kill `cat $<`
 	rm $<
@@ -79,34 +70,39 @@ $(DEV_SERVER_PID_FILE): vendor/installed
 	mkdir -p $(WORKB_BASE_DIR)
 	{ php -S $(DEV_SERVER_HOST):$(DEV_SERVER_PORT) -t $(WORKB_BASE_DIR) public/index.php & echo $$! > $@; }
 
-#
+
 # Tests and analysis
-#
 
-.PHONY: test phpspec behat phpstan phpcs
+.PHONY: test
+test: phpspec behat
 
-test: phpspec behat phpstan phpcs
+.PHONY: phpspec
+phpspec: vendor/installed $(PHPSPEC_CMD)
+	$(PHPSPEC_CMD) run
 
-phpspec: deps
-	$(PHPSPEC) run
+.PHONY: behat
+behat: vendor/installed $(CONTAINER) $(ROUTER) start $(BEHAT_CMD)
+	$(BEHAT_CMD) --stop-on-failure
 
-behat: deps $(CONTAINER) $(ROUTER) start
-	$(BEHAT) --stop-on-failure
+.PHONY: analyze
+analyze: phpstan phpcs
 
-phpstan: deps
-	$(PHPSTAN) analyze -c phpstan.neon -l 7 src
+.PHONY: phpstan
+phpstan: vendor/installed $(PHPSTAN_CMD)
+	$(PHPSTAN_CMD) analyze -c phpstan.neon -l 7 src
 
-phpcs: deps
-	$(PHPCS) src --standard=PSR2 --ignore=$(CONTAINER),$(ROUTER)
-	$(PHPCS) spec --standard=spec/ruleset.xml
+.PHONY: phpcs
+phpcs: composer.lock $(PHPCS_CMD)
+	$(PHPCS_CMD) src --standard=PSR2 --ignore=$(CONTAINER),$(ROUTER)
+	$(PHPCS_CMD) spec --standard=spec/ruleset.xml
 
-#
+.PHONY: ci
+ci: vendor/installed start $(BEHAT_CMD) $(PHPSPEC_CMD)
+	$(PHPSPEC_CMD) run --verbose
+	$(BEHAT_CMD)
+
+
 # Dependencies
-#
-
-.PHONY: deps
-
-deps: vendor/installed vendor-bin/installed
 
 composer.lock: composer.json
 	@echo composer.lock is not up to date
@@ -115,10 +111,20 @@ vendor/installed: composer.lock
 	$(COMPOSER_CMD) install
 	touch $@
 
-vendor-bin/installed:
-	$(COMPOSER_CMD) bin phpspec require phpspec/phpspec:^6
+$(PHPSPEC_CMD):
+	$(PHIVE_CMD) install phpspec/phpspec:6 --force-accept-unsigned
+
+$(BEHAT_CMD):
 	$(COMPOSER_CMD) bin behat require behat/behat:^3 behat/mink-extension:^2 behat/mink-goutte-driver:^1
-	$(COMPOSER_CMD) bin phpstan require "phpstan/phpstan:<2"
-	$(COMPOSER_CMD) bin phpcs require squizlabs/php_codesniffer:^3
+
+$(PHPSTAN_CMD):
+	$(PHIVE_CMD) install phpstan
+
+$(PHPCS_CMD):
+	$(PHIVE_CMD) install phpcs
+
+$(SECURITY_CHECKER_CMD):
 	$(COMPOSER_CMD) bin security-checker require sensiolabs/security-checker
-	touch $@
+
+$(INROUTE_CMD):
+	$(COMPOSER_CMD) bin inroute require inroutephp/console:^1

@@ -7,3 +7,5 @@
 /*.local*
 /.php_cs.cache
 /.php_cs
+/tools
+/phive.*
