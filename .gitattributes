@@ -1,7 +1,7 @@
 /composer.lock binary
 /src/DependencyInjection/ProjectServiceContainer.php binary
 /src/Http/HttpRouter.php binary
-/bin/build_container export-ignore
+/bin export-ignore
 /etc export-ignore
 /features export-ignore
 /spec export-ignore

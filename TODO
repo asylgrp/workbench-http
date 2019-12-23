@@ -1,17 +1,9 @@
 TODO
 
-* Economix
-    behöver kunna ändra även namn och kontonummer på contacts
-    men aldrig id...
-
 * CommandBus
 
     workbench\webb\CommandBus\Helper\LoggingMiddleware
         ej definierad
-        se service_layer.yaml
-
-    workbench\webb\CommandBus\CommandBusInterface
-        behöver jag??
         se service_layer.yaml
 
     CreateClaim

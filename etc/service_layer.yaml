@@ -3,9 +3,6 @@ services:
         public: false
         autowire: true
 
-    workbench\webb\CommandBus\CommandBusInterface:
-        class: workbench\webb\CommandBus\CommandBus
-
     League\Tactician\CommandBus:
         class: ~
         arguments:

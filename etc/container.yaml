@@ -96,3 +96,13 @@ services:
 
     Money\Currencies:
         class: Money\Currencies\ISOCurrencies
+
+    Mustache_Engine:
+        class: Mustache_Engine
+        arguments:
+            -
+                loader: '@Mustache_Loader_FilesystemLoader'
+
+    Mustache_Loader_FilesystemLoader:
+        class: Mustache_Loader_FilesystemLoader
+        arguments: ['templates']

@@ -29,7 +29,11 @@ class ProjectServiceContainer extends Container
         $this->methodMap = [
             'Psr\\Http\\Message\\ResponseFactoryInterface' => 'getResponseFactoryInterfaceService',
             'Psr\\Http\\Server\\RequestHandlerInterface' => 'getRequestHandlerInterfaceService',
-            'workbench\\webb\\Http\\Route\\Index' => 'getIndexService',
+            'workbench\\webb\\Http\\Route\\Billboard' => 'getBillboardService',
+            'workbench\\webb\\Http\\Route\\Claims' => 'getClaimsService',
+            'workbench\\webb\\Http\\Route\\Contacts' => 'getContactsService',
+            'workbench\\webb\\Http\\Route\\Decisions' => 'getDecisionsService',
+            'workbench\\webb\\Http\\Route\\Resources' => 'getResourcesService',
         ];
 
         $this->aliases = [];
@@ -61,6 +65,8 @@ class ProjectServiceContainer extends Container
             'Money\\Currencies' => true,
             'Money\\MoneyFormatter' => true,
             'Money\\MoneyParser' => true,
+            'Mustache_Engine' => true,
+            'Mustache_Loader_FilesystemLoader' => true,
             'Psr\\Container\\ContainerInterface' => true,
             'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
@@ -68,7 +74,6 @@ class ProjectServiceContainer extends Container
             'access_logger_stream' => true,
             'error_logger' => true,
             'error_logger_stream' => true,
-            'workbench\\webb\\CommandBus\\CommandBusInterface' => true,
             'workbench\\webb\\CommandBus\\CreateContactPerson' => true,
             'workbench\\webb\\CommandBus\\CreateContactPersonHandler' => true,
             'workbench\\webb\\CommandBus\\DeleteContactPerson' => true,
@@ -125,13 +130,57 @@ class ProjectServiceContainer extends Container
     }
 
     /**
-     * Gets the public 'workbench\webb\Http\Route\Index' shared autowired service.
+     * Gets the public 'workbench\webb\Http\Route\Billboard' shared autowired service.
      *
-     * @return \workbench\webb\Http\Route\Index
+     * @return \workbench\webb\Http\Route\Billboard
      */
-    protected function getIndexService()
+    protected function getBillboardService()
     {
-        return $this->services['workbench\\webb\\Http\\Route\\Index'] = new \workbench\webb\Http\Route\Index();
+        $this->services['workbench\\webb\\Http\\Route\\Billboard'] = $instance = new \workbench\webb\Http\Route\Billboard();
+
+        $instance->setMustacheEngine(new \Mustache_Engine(['loader' => new \Mustache_Loader_FilesystemLoader('templates')]));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Claims' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Claims
+     */
+    protected function getClaimsService()
+    {
+        return $this->services['workbench\\webb\\Http\\Route\\Claims'] = new \workbench\webb\Http\Route\Claims();
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Contacts' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Contacts
+     */
+    protected function getContactsService()
+    {
+        return $this->services['workbench\\webb\\Http\\Route\\Contacts'] = new \workbench\webb\Http\Route\Contacts();
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Decisions' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Decisions
+     */
+    protected function getDecisionsService()
+    {
+        return $this->services['workbench\\webb\\Http\\Route\\Decisions'] = new \workbench\webb\Http\Route\Decisions();
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Resources' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Resources
+     */
+    protected function getResourcesService()
+    {
+        return $this->services['workbench\\webb\\Http\\Route\\Resources'] = new \workbench\webb\Http\Route\Resources();
     }
 
     public function getParameter(string $name)

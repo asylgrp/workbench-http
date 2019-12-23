@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92600bb6e5212d7ef7d7b94fac19917a",
+    "content-hash": "4deb8b2e19bf9576d87e5ca64d91327d",
     "packages": [
         {
             "name": "asylgrp/economix",
-            "version": "1.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asylgrp/economix.git",
-                "reference": "cef821f48fb0692b3b15f5a8104f6251788800f3"
+                "reference": "4c15b0bff77ac7eabd4ea62bdc24160afd555e5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asylgrp/economix/zipball/cef821f48fb0692b3b15f5a8104f6251788800f3",
-                "reference": "cef821f48fb0692b3b15f5a8104f6251788800f3",
+                "url": "https://api.github.com/repos/asylgrp/economix/zipball/4c15b0bff77ac7eabd4ea62bdc24160afd555e5a",
+                "reference": "4c15b0bff77ac7eabd4ea62bdc24160afd555e5a",
                 "shasum": ""
             },
             "require": {
@@ -59,10 +59,10 @@
             "description": "Mix of asylgrp economy tools",
             "homepage": "https://github.com/asylgrp/economix",
             "support": {
-                "source": "https://github.com/asylgrp/economix/tree/1.2.0",
+                "source": "https://github.com/asylgrp/economix/tree/master",
                 "issues": "https://github.com/asylgrp/economix/issues"
             },
-            "time": "2019-12-22T16:18:05+00:00"
+            "time": "2019-12-22T21:06:28+00:00"
         },
         {
             "name": "aura/router",
@@ -457,16 +457,16 @@
         },
         {
             "name": "inroutephp/inroute",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inroutephp/inroute.git",
-                "reference": "4266d50ed454b9bb92ae2a99b449f823c0fe5ff6"
+                "reference": "5fc8f3cfddd6f6ffea73ec783f04eeb04a499009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inroutephp/inroute/zipball/4266d50ed454b9bb92ae2a99b449f823c0fe5ff6",
-                "reference": "4266d50ed454b9bb92ae2a99b449f823c0fe5ff6",
+                "url": "https://api.github.com/repos/inroutephp/inroute/zipball/5fc8f3cfddd6f6ffea73ec783f04eeb04a499009",
+                "reference": "5fc8f3cfddd6f6ffea73ec783f04eeb04a499009",
                 "shasum": ""
             },
             "require": {
@@ -514,7 +514,7 @@
                 "psr-15",
                 "web-router"
             ],
-            "time": "2019-12-15T22:43:11+00:00"
+            "time": "2019-12-23T22:43:22+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1019,6 +1019,52 @@
                 "psr-3"
             ],
             "time": "2019-12-20T14:22:59+00:00"
+        },
+        {
+            "name": "mustache/mustache",
+            "version": "v2.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/mustache.php.git",
+                "reference": "e95c5a008c23d3151d59ea72484d4f72049ab7f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/e95c5a008c23d3151d59ea72484d4f72049ab7f4",
+                "reference": "e95c5a008c23d3151d59ea72484d4f72049ab7f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~1.11",
+                "phpunit/phpunit": "~3.7|~4.0|~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mustache": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Hileman",
+                    "email": "justin@justinhileman.info",
+                    "homepage": "http://justinhileman.com"
+                }
+            ],
+            "description": "A Mustache implementation in PHP.",
+            "homepage": "https://github.com/bobthecow/mustache.php",
+            "keywords": [
+                "mustache",
+                "templating"
+            ],
+            "time": "2019-11-23T21:40:31+00:00"
         },
         {
             "name": "psr/container",
@@ -2438,7 +2484,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "asylgrp/economix": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

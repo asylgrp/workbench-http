@@ -6,24 +6,24 @@ BEHAT_CMD=vendor/bin/behat
 PHPSTAN_CMD=tools/phpstan
 PHPCS_CMD=tools/phpcs
 SECURITY_CHECKER_CMD=vendor/bin/security-checker
-INROUTE_CMD=vendor/bin/inroute
+INROUTE_CMD=tools/inroute
 
 TARGET=workbench-webb.zip
 
 CONTAINER=src/DependencyInjection/ProjectServiceContainer.php
 ROUTER=src/Http/HttpRouter.php
 
-SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER))
+SRC_FILES:=$(shell find src/ -type f -name '*.php' ! -path $(CONTAINER) ! -path $(ROUTER))
 ETC_FILES:=$(shell find etc/ -type f -name '*')
 HTTP_FILES:=$(shell find src/Http/ -type f -name '*.php' ! -path $(ROUTER))
 
 .DEFAULT_GOAL=all
 
 .PHONY: all
-all: test analyze build
+all: test analyze preconds build
 
 .PHONY: build
-build: preconds $(TARGET)
+build: $(CONTAINER) $(ROUTER) $(TARGET)
 
 .PHONY: preconds
 preconds: composer.lock $(SECURITY_CHECKER_CMD)
@@ -127,4 +127,4 @@ $(SECURITY_CHECKER_CMD):
 	$(COMPOSER_CMD) bin security-checker require sensiolabs/security-checker
 
 $(INROUTE_CMD):
-	$(COMPOSER_CMD) bin inroute require inroutephp/console:^1
+	$(PHIVE_CMD) install inroutephp/console:1 --force-accept-unsigned
