@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace spec\workbench\webb\Storage\Json;
+namespace spec\workbench\webb\Storage\Yayson;
 
-use workbench\webb\Storage\Json\JsonContactPersonRepository;
+use workbench\webb\Storage\Yayson\YaysonContactPersonRepository;
 use workbench\webb\Storage\ContactPersonRepositoryInterface;
 use workbench\webb\Exception\AccountNumberAlreadyExistException;
 use workbench\webb\Exception\ContactPersonAlreadyExistException;
@@ -12,15 +12,14 @@ use workbench\webb\Exception\ContactPersonDoesNotExistException;
 use asylgrp\decisionmaker\ContactPerson\ContactPersonInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\CollectionInterface;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 use hanneskod\yaysondb\Collection;
 use hanneskod\yaysondb\Engine\FlysystemEngine;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class JsonContactPersonRepositorySpec extends ObjectBehavior
+class YaysonContactPersonRepositorySpec extends ObjectBehavior
 {
     private CollectionInterface $collection;
 
@@ -36,7 +35,7 @@ class JsonContactPersonRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(JsonContactPersonRepository::class);
+        $this->shouldHaveType(YaysonContactPersonRepository::class);
     }
 
     function it_is_a_contact_person_repository()

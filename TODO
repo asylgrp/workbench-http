@@ -1,16 +1,31 @@
 TODO
 
+* Håller på med Contacts
+    * Nästa steg att visa collections..
+    * När det är gjort kan vi också få till behat!!
+
+* Validation
+    ide att skriva om Clean med ValidationResultInterface
+
+    getInputValidator() {
+        return new ArrayValidator([
+            'id' => Validator::contactId(),
+            'accont' => Validator::account(),
+            osv...
+        ]);
+    }
+
+    Och sedan för ArrayResult
+        isValid()
+        getValidData() // generics template, returns det som skickas in??
+        getErrors() // generics här med???
+
+* KP: name ska också vara unikt när vi skapar till db!
+    - även telefonnummer??
+
 * CommandBus
-
-    workbench\webb\CommandBus\Helper\LoggingMiddleware
-        ej definierad
-        se service_layer.yaml
-
     CreateClaim
     DeleteClaim
     ClearClaims
     CreateDecision
     DeleteDecision
-
-    Commit
-    Rollback

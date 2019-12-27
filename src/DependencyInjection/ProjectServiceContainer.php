@@ -26,13 +26,18 @@ class ProjectServiceContainer extends Container
         $this->parameters = $this->getDefaultParameters();
 
         $this->services = $this->privates = [];
+        $this->syntheticIds = [
+            'Psr\\Container\\ContainerInterface' => true,
+        ];
         $this->methodMap = [
             'Psr\\Http\\Message\\ResponseFactoryInterface' => 'getResponseFactoryInterfaceService',
             'Psr\\Http\\Server\\RequestHandlerInterface' => 'getRequestHandlerInterfaceService',
             'workbench\\webb\\Http\\Route\\Billboard' => 'getBillboardService',
             'workbench\\webb\\Http\\Route\\Claims' => 'getClaimsService',
-            'workbench\\webb\\Http\\Route\\Contacts' => 'getContactsService',
+            'workbench\\webb\\Http\\Route\\Contact' => 'getContactService',
+            'workbench\\webb\\Http\\Route\\ContactList' => 'getContactListService',
             'workbench\\webb\\Http\\Route\\Decisions' => 'getDecisionsService',
+            'workbench\\webb\\Http\\Route\\Log' => 'getLogService',
             'workbench\\webb\\Http\\Route\\Resources' => 'getResourcesService',
         ];
 
@@ -67,34 +72,46 @@ class ProjectServiceContainer extends Container
             'Money\\MoneyParser' => true,
             'Mustache_Engine' => true,
             'Mustache_Loader_FilesystemLoader' => true,
-            'Psr\\Container\\ContainerInterface' => true,
             'Psr\\EventDispatcher\\EventDispatcherInterface' => true,
             'Symfony\\Component\\DependencyInjection\\ContainerInterface' => true,
             'access_logger' => true,
             'access_logger_stream' => true,
-            'error_logger' => true,
-            'error_logger_stream' => true,
+            'asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer' => true,
+            'byrokrat\\banking\\AccountFactoryInterface' => true,
+            'event_logger' => true,
+            'event_logger_stream' => true,
+            'workbench\\webb\\CommandBus\\CommandBus' => true,
+            'workbench\\webb\\CommandBus\\Commit' => true,
+            'workbench\\webb\\CommandBus\\CommitHandler' => true,
             'workbench\\webb\\CommandBus\\CreateContactPerson' => true,
             'workbench\\webb\\CommandBus\\CreateContactPersonHandler' => true,
             'workbench\\webb\\CommandBus\\DeleteContactPerson' => true,
             'workbench\\webb\\CommandBus\\DeleteContactPersonHandler' => true,
+            'workbench\\webb\\CommandBus\\LoggingMiddleware' => true,
+            'workbench\\webb\\CommandBus\\Rollback' => true,
+            'workbench\\webb\\CommandBus\\RollbackHandler' => true,
             'workbench\\webb\\CommandBus\\UpdateContactPerson' => true,
             'workbench\\webb\\CommandBus\\UpdateContactPersonHandler' => true,
-            'workbench\\webb\\Event\\ContactPersonCreated' => true,
-            'workbench\\webb\\Event\\ContactPersonDeleted' => true,
-            'workbench\\webb\\Event\\ContactPersonEvent' => true,
-            'workbench\\webb\\Event\\ContactPersonUpdated' => true,
-            'workbench\\webb\\Event\\LogEvent' => true,
+            'workbench\\webb\\Event\\Listener\\LoggingListener' => true,
             'workbench\\webb\\Exception\\AccountNumberAlreadyExistException' => true,
             'workbench\\webb\\Exception\\ContactPersonAlreadyExistException' => true,
             'workbench\\webb\\Exception\\ContactPersonDoesNotExistException' => true,
             'workbench\\webb\\Exception\\InvalidConfigException' => true,
+            'workbench\\webb\\Exception\\RuntimeException' => true,
             'workbench\\webb\\Http\\HttpRouter' => true,
+            'workbench\\webb\\Http\\Middleware\\Committer' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionEndpoint' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionLogger' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionPrettifier' => true,
             'workbench\\webb\\Storage\\ContactPersonRepositoryInterface' => true,
-            'workbench\\webb\\Storage\\Json\\JsonContactPersonRepository' => true,
+            'workbench\\webb\\Storage\\TransactionHandlerInterface' => true,
+            'workbench\\webb\\Storage\\Yayson\\YaysonContactPersonRepository' => true,
+            'workbench\\webb\\Storage\\Yayson\\YaysonTransactionHandler' => true,
+            'workbench\\webb\\Storage\\Yayson\\YaysondbFactory' => true,
+            'workbench\\webb\\Utils\\MustacheConfigurator' => true,
+            'workbench\\webb\\Validation\\InputValidator' => true,
+            'workbench\\webb\\Validation\\Invalid' => true,
+            'workbench\\webb\\Validation\\Valid' => true,
         ];
     }
 
@@ -116,17 +133,17 @@ class ProjectServiceContainer extends Container
     protected function getRequestHandlerInterfaceService()
     {
         $a = ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] ?? ($this->services['Psr\\Http\\Message\\ResponseFactoryInterface'] = new \Zend\Diactoros\ResponseFactory()));
-        $b = new \Monolog\Logger('error');
-        $b->pushHandler(new \Monolog\Handler\StreamHandler($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_ERROR_LOG'), $this->getEnv('WORKB_ERROR_LEVEL')));
+        $b = new \workbench\webb\Http\Middleware\Committer();
+        $b->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
         $c = new \Monolog\Logger('access');
         $c->pushHandler(new \Monolog\Handler\StreamHandler($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_ACCESS_LOG')));
 
         $d = new \Middlewares\AccessLog($c);
         $d->format($this->getEnv('WORKB_ACCESS_FORMAT'));
         $e = new \workbench\webb\Http\HttpRouter();
-        $e->setContainer(new \workbench\webb\DependencyInjection\ProjectServiceContainer());
+        $e->setContainer(($this->services['Psr\\Container\\ContainerInterface'] ?? $this->get('Psr\\Container\\ContainerInterface', 1)));
 
-        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionEndpoint($a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \workbench\webb\Http\Middleware\ExceptionLogger($b), $d, new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $e);
+        return $this->services['Psr\\Http\\Server\\RequestHandlerInterface'] = new \inroutephp\inroute\Runtime\Middleware\Pipeline(new \workbench\webb\Http\Middleware\ExceptionEndpoint($a), new \workbench\webb\Http\Middleware\ExceptionPrettifier(), new \workbench\webb\Http\Middleware\ExceptionLogger(($this->privates['event_logger'] ?? $this->getEventLoggerService())), $b, $d, new \Middlewares\TrailingSlash(), new \Middlewares\Robots(false, $a), $e);
     }
 
     /**
@@ -138,7 +155,7 @@ class ProjectServiceContainer extends Container
     {
         $this->services['workbench\\webb\\Http\\Route\\Billboard'] = $instance = new \workbench\webb\Http\Route\Billboard();
 
-        $instance->setMustacheEngine(new \Mustache_Engine(['loader' => new \Mustache_Loader_FilesystemLoader('templates')]));
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
 
         return $instance;
     }
@@ -150,17 +167,41 @@ class ProjectServiceContainer extends Container
      */
     protected function getClaimsService()
     {
-        return $this->services['workbench\\webb\\Http\\Route\\Claims'] = new \workbench\webb\Http\Route\Claims();
+        $this->services['workbench\\webb\\Http\\Route\\Claims'] = $instance = new \workbench\webb\Http\Route\Claims();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
     }
 
     /**
-     * Gets the public 'workbench\webb\Http\Route\Contacts' shared autowired service.
+     * Gets the public 'workbench\webb\Http\Route\Contact' shared autowired service.
      *
-     * @return \workbench\webb\Http\Route\Contacts
+     * @return \workbench\webb\Http\Route\Contact
      */
-    protected function getContactsService()
+    protected function getContactService()
     {
-        return $this->services['workbench\\webb\\Http\\Route\\Contacts'] = new \workbench\webb\Http\Route\Contacts();
+        $this->services['workbench\\webb\\Http\\Route\\Contact'] = $instance = new \workbench\webb\Http\Route\Contact(($this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] ?? $this->getContactPersonNormalizerService()));
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
+        $instance->setInputValidator(new \workbench\webb\Validation\InputValidator(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory()))));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\ContactList' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\ContactList
+     */
+    protected function getContactListService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\ContactList'] = $instance = new \workbench\webb\Http\Route\ContactList();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
     }
 
     /**
@@ -170,7 +211,25 @@ class ProjectServiceContainer extends Container
      */
     protected function getDecisionsService()
     {
-        return $this->services['workbench\\webb\\Http\\Route\\Decisions'] = new \workbench\webb\Http\Route\Decisions();
+        $this->services['workbench\\webb\\Http\\Route\\Decisions'] = $instance = new \workbench\webb\Http\Route\Decisions();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Log' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Log
+     */
+    protected function getLogService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\Log'] = $instance = new \workbench\webb\Http\Route\Log();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
     }
 
     /**
@@ -181,6 +240,105 @@ class ProjectServiceContainer extends Container
     protected function getResourcesService()
     {
         return $this->services['workbench\\webb\\Http\\Route\\Resources'] = new \workbench\webb\Http\Route\Resources();
+    }
+
+    /**
+     * Gets the private 'Mustache_Engine' shared autowired service.
+     *
+     * @return \Mustache_Engine
+     */
+    protected function getMustacheEngineService()
+    {
+        $this->privates['Mustache_Engine'] = $instance = new \Mustache_Engine(['loader' => new \Mustache_Loader_FilesystemLoader('templates')]);
+
+        (new \workbench\webb\Utils\MustacheConfigurator())->configureMustache($instance);
+
+        return $instance;
+    }
+
+    /**
+     * Gets the private 'asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer' shared autowired service.
+     *
+     * @return \asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer
+     */
+    protected function getContactPersonNormalizerService()
+    {
+        return $this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] = new \asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory())));
+    }
+
+    /**
+     * Gets the private 'event_logger' shared autowired service.
+     *
+     * @return \Monolog\Logger
+     */
+    protected function getEventLoggerService()
+    {
+        $this->privates['event_logger'] = $instance = new \Monolog\Logger('event');
+
+        $instance->pushHandler(new \Monolog\Handler\StreamHandler($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_EVENT_LOG'), $this->getEnv('WORKB_LOG_LEVEL')));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the private 'workbench\webb\CommandBus\CommandBus' shared autowired service.
+     *
+     * @return \workbench\webb\CommandBus\CommandBus
+     */
+    protected function getCommandBusService()
+    {
+        $a = new \workbench\webb\CommandBus\LoggingMiddleware();
+
+        $b = new \Fig\EventDispatcher\AggregateProvider();
+
+        $c = new \Crell\Tukio\OrderedListenerProvider(($this->services['Psr\\Container\\ContainerInterface'] ?? $this->get('Psr\\Container\\ContainerInterface', 1)));
+        $c->addListener(new \workbench\webb\Event\Listener\LoggingListener(($this->privates['event_logger'] ?? $this->getEventLoggerService())));
+
+        $b->addProvider($c);
+
+        $d = new \Crell\Tukio\Dispatcher($b);
+
+        $a->setEventDispatcher($d);
+        $e = $this->getTransactionHandlerInterfaceService();
+
+        $f = new \workbench\webb\CommandBus\CommitHandler($e);
+        $f->setEventDispatcher($d);
+        $g = new \workbench\webb\CommandBus\RollbackHandler($e);
+        $g->setEventDispatcher($d);
+        $h = new \workbench\webb\CommandBus\CreateContactPersonHandler();
+
+        $i = $this->getContactPersonRepositoryInterfaceService();
+
+        $h->setContactPersonRepository($i);
+        $h->setEventDispatcher($d);
+        $j = new \workbench\webb\CommandBus\DeleteContactPersonHandler();
+        $j->setContactPersonRepository($i);
+        $j->setEventDispatcher($d);
+        $k = new \workbench\webb\CommandBus\UpdateContactPersonHandler();
+        $k->setContactPersonRepository($i);
+        $k->setEventDispatcher($d);
+
+        return $this->privates['workbench\\webb\\CommandBus\\CommandBus'] = new \workbench\webb\CommandBus\CommandBus(new \League\Tactician\CommandBus([0 => $a, 1 => new \League\Tactician\Handler\CommandHandlerMiddleware(new \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor(), new \League\Tactician\Handler\Locator\InMemoryLocator(['workbench\\webb\\CommandBus\\Commit' => $f, 'workbench\\webb\\CommandBus\\Rollback' => $g, 'workbench\\webb\\CommandBus\\CreateContactPerson' => $h, 'workbench\\webb\\CommandBus\\DeleteContactPerson' => $j, 'workbench\\webb\\CommandBus\\UpdateContactPerson' => $k]), new \League\Tactician\Handler\MethodNameInflector\HandleInflector())]));
+    }
+
+    /**
+     * Gets the private 'workbench\webb\Storage\ContactPersonRepositoryInterface' shared autowired service.
+     *
+     * @return \workbench\webb\Storage\Yayson\YaysonContactPersonRepository
+     */
+    protected function getContactPersonRepositoryInterfaceService()
+    {
+        return ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] ?? ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] = new \workbench\webb\Storage\Yayson\YaysondbFactory($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_DSN'))))->createContactPersonRepository(($this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] ?? $this->getContactPersonNormalizerService()));
+    }
+
+    /**
+     * Gets the private 'workbench\webb\Storage\TransactionHandlerInterface' shared autowired service.
+     *
+     * @return \workbench\webb\Storage\Yayson\YaysonTransactionHandler
+     */
+    protected function getTransactionHandlerInterfaceService()
+    {
+        return ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] ?? ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] = new \workbench\webb\Storage\Yayson\YaysondbFactory($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_DSN'))))->createTransactionHandler();
     }
 
     public function getParameter(string $name)
@@ -231,11 +389,11 @@ class ProjectServiceContainer extends Container
         return [
             'env(WORKB_ORG_NAME)' => 'Unknown organization',
             'env(WORKB_BASE_DIR)' => '.',
-            'env(WORKB_DECISIONS_DIR)' => 'decisions',
+            'env(WORKB_DSN)' => 'data',
             'env(WORKB_ACCESS_LOG)' => 'access-log.txt',
             'env(WORKB_ACCESS_FORMAT)' => '%h %u %t %T "%r" %>s %b',
-            'env(WORKB_ERROR_LOG)' => 'error-log.txt',
-            'env(WORKB_ERROR_LEVEL)' => 'notice',
+            'env(WORKB_EVENT_LOG)' => 'event-log.txt',
+            'env(WORKB_LOG_LEVEL)' => 'notice',
         ];
     }
 }

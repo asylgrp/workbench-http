@@ -48,6 +48,7 @@ clean: stop
 	rm -rf vendor
 	rm -rf vendor-bin
 	rm -rf tools
+	rm -rf $(WORKB_BASE_DIR)
 
 
 # Development webserver
@@ -64,7 +65,6 @@ start: $(DEV_SERVER_PID_FILE)
 stop: $(DEV_SERVER_PID_FILE)
 	-kill `cat $<`
 	rm $<
-	rm -rf $(WORKB_BASE_DIR)
 
 $(DEV_SERVER_PID_FILE): vendor/installed
 	mkdir -p $(WORKB_BASE_DIR)

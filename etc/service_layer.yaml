@@ -7,7 +7,7 @@ services:
         class: ~
         arguments:
             -
-                - '@workbench\webb\CommandBus\Helper\LoggingMiddleware'
+                - '@workbench\webb\CommandBus\LoggingMiddleware'
                 - '@League\Tactician\Handler\CommandHandlerMiddleware'
 
     League\Tactician\Handler\CommandHandlerMiddleware:
@@ -24,6 +24,8 @@ services:
         class: ~
         arguments:
             -
+                workbench\webb\CommandBus\Commit: '@workbench\webb\CommandBus\CommitHandler'
+                workbench\webb\CommandBus\Rollback: '@workbench\webb\CommandBus\RollbackHandler'
                 workbench\webb\CommandBus\CreateContactPerson: '@workbench\webb\CommandBus\CreateContactPersonHandler'
                 workbench\webb\CommandBus\DeleteContactPerson: '@workbench\webb\CommandBus\DeleteContactPersonHandler'
                 workbench\webb\CommandBus\UpdateContactPerson: '@workbench\webb\CommandBus\UpdateContactPersonHandler'

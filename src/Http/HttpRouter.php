@@ -25,6 +25,102 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
+                'workbench\\webb\\Http\\Route\\ContactList:listActive',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/active',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\ContactList',
+            ],
+            'serviceMethod' => [
+                'listActive',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\ContactList:listBanned',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/banned',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\ContactList',
+            ],
+            'serviceMethod' => [
+                'listBanned',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\ContactList:listBlocked',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/blocked',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\ContactList',
+            ],
+            'serviceMethod' => [
+                'listBlocked',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
                 'workbench\\webb\\Http\\Route\\Decisions:list',
             ],
             'routable' => [
@@ -36,7 +132,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/decision',
+                '/decisions',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Decisions',
@@ -68,7 +164,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/decision',
+                '/decisions',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Decisions',
@@ -100,7 +196,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/decision/{id}',
+                '/decisions/{id}',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Decisions',
@@ -132,7 +228,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/decision/{id}/delete',
+                '/decisions/{id}/delete',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Decisions',
@@ -164,7 +260,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/claim',
+                '/claims',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Claims',
@@ -185,24 +281,24 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Claims:purge',
+                'workbench\\webb\\Http\\Route\\Claims:newForm',
             ],
             'routable' => [
                 true,
             ],
             'httpMethods' => [
                 [
-                    'POST',
+                    'GET',
                 ],
             ],
             'path' => [
-                '/claim/purge',
+                '/claims/new',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Claims',
             ],
             'serviceMethod' => [
-                'purge',
+                'newForm',
             ],
         ],
     ],
@@ -217,7 +313,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Claims:create',
+                'workbench\\webb\\Http\\Route\\Claims:createNew',
             ],
             'routable' => [
                 true,
@@ -228,13 +324,13 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/claim',
+                '/claims/new',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Claims',
             ],
             'serviceMethod' => [
-                'create',
+                'createNew',
             ],
         ],
     ],
@@ -260,7 +356,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/claim/{id}',
+                '/claims/{id}',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Claims',
@@ -292,7 +388,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/claim/{id}/delete',
+                '/claims/{id}/delete',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Claims',
@@ -313,39 +409,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contacts:list',
-            ],
-            'routable' => [
-                true,
-            ],
-            'httpMethods' => [
-                [
-                    'GET',
-                ],
-            ],
-            'path' => [
-                '/contacts',
-            ],
-            'serviceId' => [
-                'workbench\\webb\\Http\\Route\\Contacts',
-            ],
-            'serviceMethod' => [
-                'list',
-            ],
-        ],
-    ],
-    $o[0],
-    []
-));
-$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-    $o = [
-        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
-    ],
-    null,
-    [
-        'inroutephp\\inroute\\Runtime\\Route' => [
-            'name' => [
-                'workbench\\webb\\Http\\Route\\Contacts:create',
+                'workbench\\webb\\Http\\Route\\Claims:purge',
             ],
             'routable' => [
                 true,
@@ -356,109 +420,13 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/contacts',
+                '/claims/purge',
             ],
             'serviceId' => [
-                'workbench\\webb\\Http\\Route\\Contacts',
+                'workbench\\webb\\Http\\Route\\Claims',
             ],
             'serviceMethod' => [
-                'create',
-            ],
-        ],
-    ],
-    $o[0],
-    []
-));
-$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-    $o = [
-        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
-    ],
-    null,
-    [
-        'inroutephp\\inroute\\Runtime\\Route' => [
-            'name' => [
-                'workbench\\webb\\Http\\Route\\Contacts:get',
-            ],
-            'routable' => [
-                true,
-            ],
-            'httpMethods' => [
-                [
-                    'GET',
-                ],
-            ],
-            'path' => [
-                '/contacts/{id}',
-            ],
-            'serviceId' => [
-                'workbench\\webb\\Http\\Route\\Contacts',
-            ],
-            'serviceMethod' => [
-                'get',
-            ],
-        ],
-    ],
-    $o[0],
-    []
-));
-$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-    $o = [
-        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
-    ],
-    null,
-    [
-        'inroutephp\\inroute\\Runtime\\Route' => [
-            'name' => [
-                'workbench\\webb\\Http\\Route\\Contacts:update',
-            ],
-            'routable' => [
-                true,
-            ],
-            'httpMethods' => [
-                [
-                    'POST',
-                ],
-            ],
-            'path' => [
-                '/contacts/{id}',
-            ],
-            'serviceId' => [
-                'workbench\\webb\\Http\\Route\\Contacts',
-            ],
-            'serviceMethod' => [
-                'update',
-            ],
-        ],
-    ],
-    $o[0],
-    []
-));
-$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-    $o = [
-        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
-    ],
-    null,
-    [
-        'inroutephp\\inroute\\Runtime\\Route' => [
-            'name' => [
-                'workbench\\webb\\Http\\Route\\Contacts:delete',
-            ],
-            'routable' => [
-                true,
-            ],
-            'httpMethods' => [
-                [
-                    'POST',
-                ],
-            ],
-            'path' => [
-                '/contacts/{id}/delete',
-            ],
-            'serviceId' => [
-                'workbench\\webb\\Http\\Route\\Contacts',
-            ],
-            'serviceMethod' => [
-                'delete',
+                'purge',
             ],
         ],
     ],
@@ -491,6 +459,38 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
             ],
             'serviceMethod' => [
                 'trimmings',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'bootstrap.min.css',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/bootstrap.min.css',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Resources',
+            ],
+            'serviceMethod' => [
+                'bootstrap',
             ],
         ],
     ],
@@ -555,6 +555,198 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
             ],
             'serviceMethod' => [
                 'post',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:newForm',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/new',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'newForm',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:createNew',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'POST',
+                ],
+            ],
+            'path' => [
+                '/contacts/new',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'createNew',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:get',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'get',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:update',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'POST',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'update',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:delete',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'POST',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}/delete',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'delete',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Log:list',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/log',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Log',
+            ],
+            'serviceMethod' => [
+                'list',
             ],
         ],
     ],

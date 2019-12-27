@@ -18,9 +18,21 @@ final class Resources
     public function trimmings(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {
         return new TextResponse(
-            file_get_contents(__DIR__ . '/../../../res/trimmings.js'),
+            (string)file_get_contents(__DIR__ . '/../../../res/trimmings.js'),
             200,
             ['Content-Type' => ['application/javascript']]
+        );
+    }
+
+    /**
+     * @GET(path="/bootstrap.min.css", name="bootstrap.min.css")
+     */
+    public function bootstrap(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    {
+        return new TextResponse(
+            (string)file_get_contents(__DIR__ . '/../../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'),
+            200,
+            ['Content-Type' => ['text/css']]
         );
     }
 }

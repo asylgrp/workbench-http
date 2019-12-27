@@ -4,56 +4,67 @@ declare(strict_types = 1);
 
 namespace workbench\webb\Http\Route;
 
+use workbench\webb\DependencyInjection\MustacheProperty;
 use inroutephp\inroute\Annotations\BasePath;
 use inroutephp\inroute\Annotations\GET;
 use inroutephp\inroute\Annotations\POST;
 use inroutephp\inroute\Runtime\EnvironmentInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response\TextResponse;
+use Zend\Diactoros\Response\HtmlResponse;
 
 /**
- * @BasePath(path="/claim")
+ * @BasePath(path="/claims")
  */
 final class Claims
 {
+    use MustacheProperty;
+
     /**
      * @GET(path="")
      */
-    public function list(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function list(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse($this->mustache->render('claim-list', []));
     }
 
     /**
-     * @POST(path="/purge")
+     * @GET(path="/new")
      */
-    public function purge(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function newForm(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse($this->mustache->render('claim-form', []));
     }
 
     /**
-     * @POST(path="")
+     * @POST(path="/new")
      */
-    public function create(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function createNew(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
     }
 
     /**
      * @GET(path="/{id}")
      */
-    public function get(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function get(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
     }
 
     /**
      * @POST(path="/{id}/delete")
      */
-    public function delete(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function delete(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
+    }
+
+    /**
+     * @POST(path="/purge")
+     */
+    public function purge(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
+    {
+        return new HtmlResponse('');
     }
 }

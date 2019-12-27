@@ -1,11 +1,11 @@
 parameters:
     env(WORKB_ORG_NAME): "Unknown organization"
     env(WORKB_BASE_DIR): "."
-    env(WORKB_DECISIONS_DIR): "decisions"
+    env(WORKB_DSN): "data"
     env(WORKB_ACCESS_LOG): "access-log.txt"
     env(WORKB_ACCESS_FORMAT): '%h %u %t %T "%r" %>s %b'
-    env(WORKB_ERROR_LOG): "error-log.txt"
-    env(WORKB_ERROR_LEVEL): "notice"
+    env(WORKB_EVENT_LOG): "event-log.txt"
+    env(WORKB_LOG_LEVEL): "notice"
 
 imports:
     - { resource: event_dispatcher.yaml }
@@ -18,7 +18,9 @@ services:
 
     workbench\webb\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection/ProjectServiceContainer.php}'
+        exclude:
+            - '../src/DependencyInjection/ProjectServiceContainer.php'
+            - '../src/Event'
 
     workbench\webb\Http\Route\:
         resource: '../src/Http/Route/*'
@@ -31,6 +33,7 @@ services:
             - '@workbench\webb\Http\Middleware\ExceptionEndpoint'
             - '@workbench\webb\Http\Middleware\ExceptionPrettifier'
             - '@workbench\webb\Http\Middleware\ExceptionLogger'
+            - '@workbench\webb\Http\Middleware\Committer'
             - '@Middlewares\AccessLog'
             - '@Middlewares\TrailingSlash'
             - '@Middlewares\Robots'
@@ -38,18 +41,18 @@ services:
 
     workbench\webb\Http\Middleware\ExceptionLogger:
         class: ~
-        arguments: ['@error_logger']
+        arguments: ['@event_logger']
 
-    error_logger:
+    event_logger:
         class: Monolog\Logger
-        arguments: ['error']
+        arguments: ['event']
         calls:
             - method: pushHandler
-              arguments: ['@error_logger_stream']
+              arguments: ['@event_logger_stream']
 
-    error_logger_stream:
+    event_logger_stream:
         class: Monolog\Handler\StreamHandler
-        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_ERROR_LOG)%', '%env(WORKB_ERROR_LEVEL)%']
+        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_EVENT_LOG)%', '%env(WORKB_LOG_LEVEL)%']
 
     Middlewares\AccessLog:
         class: ~
@@ -82,11 +85,32 @@ services:
               arguments: ['@Psr\Container\ContainerInterface']
 
     Psr\Container\ContainerInterface:
-        class: workbench\webb\DependencyInjection\ProjectServiceContainer
+        synthetic: true
+        public: true
 
     Psr\Http\Message\ResponseFactoryInterface:
         class: Zend\Diactoros\ResponseFactory
         public: true
+
+    workbench\webb\Storage\Yayson\YaysondbFactory:
+        class: ~
+        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_DSN)%']
+
+    workbench\webb\Storage\ContactPersonRepositoryInterface:
+        class: workbench\webb\Storage\Yayson\YaysonContactPersonRepository
+        factory: ['@workbench\webb\Storage\Yayson\YaysondbFactory', createContactPersonRepository]
+
+    workbench\webb\Storage\TransactionHandlerInterface:
+        class: workbench\webb\Storage\Yayson\YaysonTransactionHandler
+        factory: ['@workbench\webb\Storage\Yayson\YaysondbFactory', createTransactionHandler]
+
+    asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer:
+        class: ~
+        arguments: ['@byrokrat\banking\AccountFactoryInterface']
+
+    byrokrat\banking\AccountFactoryInterface:
+        class: byrokrat\banking\AccountFactory
+        autowire: false
 
     Money\MoneyFormatter:
         class: Money\Formatter\DecimalMoneyFormatter
@@ -102,6 +126,7 @@ services:
         arguments:
             -
                 loader: '@Mustache_Loader_FilesystemLoader'
+        configurator: ['@workbench\webb\Utils\MustacheConfigurator', 'configureMustache']
 
     Mustache_Loader_FilesystemLoader:
         class: Mustache_Loader_FilesystemLoader

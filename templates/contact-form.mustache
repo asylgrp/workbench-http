@@ -1,0 +1,64 @@
+{{% FILTERS }}
+{{> header }}
+
+<form action="/contacts/new" method="post">
+    <div class="form-group">
+      <label for="name">Namn</label>
+      <input required type="text" class="form-control {{# form:error.name}}is-invalid{{/ form:error.name}}" id="name" name="name" aria-describedby="nameHelp" autocomplete="off" value="{{form:data.name}}">
+      <small id="nameHelp" class="form-text text-muted">Samma namn kan ej förekomma flera gånger. Om två kontaktersoner heter samma sak måste därför någon typ av unik identifierare tillfogas namnet</small>
+      <div class="invalid-feedback">{{{form:error.name|nl2br}}}</div>
+    </div>
+
+    <div class="form-row">
+      {{# form:data.id}}
+      <div class="form-group">
+        <label for="id">Id</label>
+        <input disabled type="text" class="form-control {{# form:error.id}}is-invalid{{/ form:error.id}}" id="id" name="id" value="{{form:data.id}}">
+        <div class="invalid-feedback">{{{form:error.id|nl2br}}}</div>
+      </div>
+      {{/ form:data.id}}
+
+      <div class="col-md-3 mb-3">
+        <label for="status">Status</label>
+        <select class="custom-select {{# form:error.status}}is-invalid{{/ form:error.status}}" id="status" name="status">
+          <option {{form:data.status.ACTIVE}} value="ACTIVE">Aktiv</option>
+          <option {{form:data.status.BANNED}} value="BANNED">Spärrad</option>
+          <option {{form:data.status.BLOCKED}} value="BLOCKED">Blockerad</option>
+        </select>
+        <div class="invalid-feedback">{{{form:error.status|nl2br}}}</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="account">Kontonummer</label>
+      <input required type="text" class="form-control {{# form:error.account}}is-invalid{{/ form:error.account}}" id="account" name="account" aria-describedby="accountHelp" autocomplete="off" value="{{form:data.account}}">
+      <small id="accountHelp" class="form-text text-muted">Clearingnummber och löpnummer måste separeras med ett komma (,). Minustecken (-) kan användas för att markera kontrollsiffror, men andra skiljetecken kan inte användas. Mellanslag ignoreras. Samma kontonummer kan ej förekomma hos flera olika kontaktpersoner.</small>
+      <div class="invalid-feedback">{{{form:error.account|nl2br}}}</div>
+    </div>
+    <div class="form-group">
+      <label for="mail">Mail</label>
+      <input required type="email" class="form-control {{# form:error.mail}}is-invalid{{/ form:error.mail}}" id="mail" name="mail" aria-describedby="mailHelp" autocomplete="off" value="{{form:data.mail}}">
+      <small id="mailHelp" class="form-text text-muted">Mailadress måste alltid anges. Samma adress kan ej förekomma hos flera olika kontaktpersoner.</small>
+      <div class="invalid-feedback">{{{form:error.mail|nl2br}}}</div>
+    </div>
+    <div class="form-group">
+      <label for="phone">Telefonnummer</label>
+      <input type="tel" class="form-control {{# form:error.phone}}is-invalid{{/ form:error.phone}}" id="phone" name="phone" aria-describedby="phoneHelp" autocomplete="off" value="{{form:data.phone}}">
+      <small id="phoneHelp" class="form-text text-muted">Telefonnummer måste alltid anges. Samma nummer kan ej förekomma hos flera olika kontaktpersoner.</small>
+      <div class="invalid-feedback">{{{form:error.phone|nl2br}}}</div>
+    </div>
+    <div class="mb-3 form-group">
+      <label for="comment">Kommentar</label>
+      <textarea class="form-control {{# form:error.comment}}is-invalid{{/ form:error.comment}}" id="comment" name="comment" aria-describedby="commentHelp">{{form:data.comment}}</textarea>
+      <small id="commentHelp" class="form-text text-muted">Exempelvis andra kontaktpersoner som denna person sammarbetar med, hur den kom i kontakt med oss osv.</small>
+      <div class="invalid-feedback">{{{form:error.comment|nl2br}}}</div>
+    </div>
+
+    <div>
+        <br>
+        <button type="submit" class="btn btn-primary">Spara kontaktperson</button>
+        <input type="reset" class="btn btn-secondary" value="Återställ">
+    </div>
+</form>
+
+{{> footer }}

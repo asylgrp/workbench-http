@@ -25,6 +25,11 @@ class ExceptionLoggerSpec extends ObjectBehavior
         $this->shouldHaveType(ExceptionLogger::class);
     }
 
+    function it_is_middleware()
+    {
+        $this->shouldHaveType(MiddlewareInterface::class);
+    }
+
     function it_does_nothing_on_success(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,

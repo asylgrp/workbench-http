@@ -16,6 +16,13 @@ services:
 
     Crell\Tukio\OrderedProviderInterface:
         class: Crell\Tukio\OrderedListenerProvider
-        #calls:
+        calls:
+            - method: addListener
+              arguments: ['@workbench\webb\Event\Listener\LoggingListener']
+        # TODO
         #    - method: addListener
         #      arguments: ['@workbench\webb\Event\Listener\DonorEventRecorder']
+
+    workbench\webb\Event\Listener\LoggingListener:
+        class: ~
+        arguments: ['@event_logger']

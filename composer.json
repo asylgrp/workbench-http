@@ -41,7 +41,9 @@
         "fig/event-dispatcher-util": "^1",
         "crell/tukio": "^1",
         "psr/log": "^1",
+        "ramsey/uuid": "^3",
         "symfony/dependency-injection": "^5",
+        "twbs/bootstrap": "^4.4",
         "zendframework/zend-diactoros": "^2.0",
         "zendframework/zend-httphandlerrunner": "^1.0"
     },

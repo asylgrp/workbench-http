@@ -1,6 +1,6 @@
 <?php
 
-namespace workbench\webb\Storage\Json;
+namespace workbench\webb\Storage\Yayson;
 
 use workbench\webb\Storage\ContactPersonRepositoryInterface;
 use workbench\webb\Exception\AccountNumberAlreadyExistException;
@@ -11,7 +11,7 @@ use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\CollectionInterface;
 use hanneskod\yaysondb\Operators as y;
 
-final class JsonContactPersonRepository implements ContactPersonRepositoryInterface
+final class YaysonContactPersonRepository implements ContactPersonRepositoryInterface
 {
     /** @var CollectionInterface<array> */
     private CollectionInterface $collection;
@@ -30,7 +30,7 @@ final class JsonContactPersonRepository implements ContactPersonRepositoryInterf
     {
         if ($this->collection->has($contactPerson->getId())) {
             throw new ContactPersonAlreadyExistException(
-                "Unable to save contact person {$contactPerson->getId()}, id already exists"
+                "Kan ej spara kontaktperson, id {$contactPerson->getId()} finns redan i databas"
             );
         }
 
@@ -41,10 +41,9 @@ final class JsonContactPersonRepository implements ContactPersonRepositoryInterf
         if ($existing = $this->collection->findOne($expr)) {
             throw new AccountNumberAlreadyExistException(
                 sprintf(
-                    "Unable to save contact person %s, account nummber %s already exists in %s",
-                    $contactPerson->getId(),
+                    "Kan ej spara kontaktperson, kontonummer %s finns redan hos %s",
                     $existing['account'] ?? '',
-                    $existing['id'] ?? ''
+                    $existing['name'] ?? ''
                 )
             );
         }
@@ -55,7 +54,7 @@ final class JsonContactPersonRepository implements ContactPersonRepositoryInterf
     public function deleteContactPerson(ContactPersonInterface $contactPerson): void
     {
         if (!$this->collection->has($contactPerson->getId())) {
-            throw new ContactPersonDoesNotExistException("Unknown contact person: {$contactPerson->getId()}");
+            throw new ContactPersonDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
         }
 
         $this->collection->delete(
@@ -66,7 +65,7 @@ final class JsonContactPersonRepository implements ContactPersonRepositoryInterf
     public function updateContactPerson(ContactPersonInterface $contactPerson): void
     {
         if (!$this->collection->has($contactPerson->getId())) {
-            throw new ContactPersonDoesNotExistException("Unknown contact person: {$contactPerson->getId()}");
+            throw new ContactPersonDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
         }
 
         $data = $this->normalizer->normalize($contactPerson);
@@ -79,10 +78,9 @@ final class JsonContactPersonRepository implements ContactPersonRepositoryInterf
         if ($existing = $this->collection->findOne($expr)) {
             throw new AccountNumberAlreadyExistException(
                 sprintf(
-                    "Unable to update contact person %s, account nummber %s already exists in %s",
-                    $contactPerson->getId(),
+                    "Kan ej uppdatera kontaktperson, kontonummer %s finns redan hos %s",
                     $existing['account'] ?? '',
-                    $existing['id'] ?? ''
+                    $existing['name'] ?? ''
                 )
             );
         }

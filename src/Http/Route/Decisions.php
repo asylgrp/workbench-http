@@ -4,25 +4,28 @@ declare(strict_types = 1);
 
 namespace workbench\webb\Http\Route;
 
+use workbench\webb\DependencyInjection\MustacheProperty;
 use inroutephp\inroute\Annotations\BasePath;
 use inroutephp\inroute\Annotations\GET;
 use inroutephp\inroute\Annotations\POST;
 use inroutephp\inroute\Runtime\EnvironmentInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response\TextResponse;
+use Zend\Diactoros\Response\HtmlResponse;
 
 /**
- * @BasePath(path="/decision")
+ * @BasePath(path="/decisions")
  */
 final class Decisions
 {
+    use MustacheProperty;
+
     /**
      * @GET(path="")
      */
     public function list(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse($this->mustache->render('decisions', []));
     }
 
     /**
@@ -30,7 +33,7 @@ final class Decisions
      */
     public function create(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
     }
 
     /**
@@ -38,7 +41,7 @@ final class Decisions
      */
     public function get(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
     }
 
     /**
@@ -46,6 +49,6 @@ final class Decisions
      */
     public function delete(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {
-        return new TextResponse('index');
+        return new HtmlResponse('');
     }
 }
