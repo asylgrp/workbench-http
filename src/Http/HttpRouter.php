@@ -569,7 +569,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contact:newForm',
+                'workbench\\webb\\Http\\Route\\Contact:newContactForm',
             ],
             'routable' => [
                 true,
@@ -586,7 +586,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 'workbench\\webb\\Http\\Route\\Contact',
             ],
             'serviceMethod' => [
-                'newForm',
+                'newContactForm',
             ],
         ],
     ],
@@ -601,7 +601,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contact:createNew',
+                'workbench\\webb\\Http\\Route\\Contact:newContactTarget',
             ],
             'routable' => [
                 true,
@@ -618,7 +618,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 'workbench\\webb\\Http\\Route\\Contact',
             ],
             'serviceMethod' => [
-                'createNew',
+                'newContactTarget',
             ],
         ],
     ],
@@ -633,7 +633,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contact:get',
+                'workbench\\webb\\Http\\Route\\Contact:describeContact',
             ],
             'routable' => [
                 true,
@@ -650,7 +650,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 'workbench\\webb\\Http\\Route\\Contact',
             ],
             'serviceMethod' => [
-                'get',
+                'describeContact',
             ],
         ],
     ],
@@ -665,7 +665,39 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contact:update',
+                'workbench\\webb\\Http\\Route\\Contact:editContactForm',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}/edit',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\Contact',
+            ],
+            'serviceMethod' => [
+                'editContactForm',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'workbench\\webb\\Http\\Route\\Contact:editContactTarget',
             ],
             'routable' => [
                 true,
@@ -676,13 +708,13 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 ],
             ],
             'path' => [
-                '/contacts/{id}',
+                '/contacts/{id}/edit',
             ],
             'serviceId' => [
                 'workbench\\webb\\Http\\Route\\Contact',
             ],
             'serviceMethod' => [
-                'update',
+                'editContactTarget',
             ],
         ],
     ],
@@ -697,7 +729,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
-                'workbench\\webb\\Http\\Route\\Contact:delete',
+                'workbench\\webb\\Http\\Route\\Contact:deleteContactTarget',
             ],
             'routable' => [
                 true,
@@ -714,7 +746,7 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
                 'workbench\\webb\\Http\\Route\\Contact',
             ],
             'serviceMethod' => [
-                'delete',
+                'deleteContactTarget',
             ],
         ],
     ],

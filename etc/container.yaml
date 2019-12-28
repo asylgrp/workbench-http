@@ -96,7 +96,7 @@ services:
         class: ~
         arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_DSN)%']
 
-    workbench\webb\Storage\ContactPersonRepositoryInterface:
+    workbench\webb\Storage\ContactPersonRepository:
         class: workbench\webb\Storage\Yayson\YaysonContactPersonRepository
         factory: ['@workbench\webb\Storage\Yayson\YaysondbFactory', createContactPersonRepository]
 

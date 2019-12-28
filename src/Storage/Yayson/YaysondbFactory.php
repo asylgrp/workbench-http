@@ -2,7 +2,7 @@
 
 namespace workbench\webb\Storage\Yayson;
 
-use workbench\webb\Storage\ContactPersonRepositoryInterface;
+use workbench\webb\Storage\ContactPersonRepository;
 use workbench\webb\Storage\TransactionHandlerInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\Yaysondb;
@@ -27,7 +27,7 @@ class YaysondbFactory
         ]);
     }
 
-    public function createContactPersonRepository(ContactPersonNormalizer $normalizr): ContactPersonRepositoryInterface
+    public function createContactPersonRepository(ContactPersonNormalizer $normalizr): ContactPersonRepository
     {
         return new YaysonContactPersonRepository($this->yaysondb->collection('contacts'), $normalizr);
     }

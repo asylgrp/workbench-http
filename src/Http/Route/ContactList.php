@@ -16,12 +16,20 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class ContactList extends AbstractRoute
 {
+    use DependencyInjection\ContactPersonRepositoryProperty;
+
     /**
      * @GET(path="/active")
      */
     public function listActive(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return $this->render('contact-list', ['desc' => 'Aktiva']);
+        return $this->render(
+            'contact-list',
+            [
+                'desc' => 'Aktiva',
+                'contacts' => $this->contactPersonRepository->activeContactPersons()
+            ]
+        );
     }
 
     /**
@@ -29,7 +37,13 @@ final class ContactList extends AbstractRoute
      */
     public function listBanned(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return $this->render('contact-list', ['desc' => 'Spärrade']);
+        return $this->render(
+            'contact-list',
+            [
+                'desc' => 'Spärrade',
+                'contacts' => $this->contactPersonRepository->bannedContactPersons()
+            ]
+        );
     }
 
     /**
@@ -37,6 +51,12 @@ final class ContactList extends AbstractRoute
      */
     public function listBlocked(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return $this->render('contact-list', ['desc' => 'Blockerade']);
+        return $this->render(
+            'contact-list',
+            [
+                'desc' => 'Blockerade',
+                'contacts' => $this->contactPersonRepository->blockedContactPersons()
+            ]
+        );
     }
 }

@@ -103,7 +103,7 @@ class ProjectServiceContainer extends Container
             'workbench\\webb\\Http\\Middleware\\ExceptionEndpoint' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionLogger' => true,
             'workbench\\webb\\Http\\Middleware\\ExceptionPrettifier' => true,
-            'workbench\\webb\\Storage\\ContactPersonRepositoryInterface' => true,
+            'workbench\\webb\\Storage\\ContactPersonRepository' => true,
             'workbench\\webb\\Storage\\TransactionHandlerInterface' => true,
             'workbench\\webb\\Storage\\Yayson\\YaysonContactPersonRepository' => true,
             'workbench\\webb\\Storage\\Yayson\\YaysonTransactionHandler' => true,
@@ -181,11 +181,13 @@ class ProjectServiceContainer extends Container
      */
     protected function getContactService()
     {
-        $this->services['workbench\\webb\\Http\\Route\\Contact'] = $instance = new \workbench\webb\Http\Route\Contact(($this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] ?? $this->getContactPersonNormalizerService()));
+        $a = ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory()));
+
+        $this->services['workbench\\webb\\Http\\Route\\Contact'] = $instance = new \workbench\webb\Http\Route\Contact($a);
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
         $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
-        $instance->setInputValidator(new \workbench\webb\Validation\InputValidator(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory()))));
+        $instance->setInputValidator(new \workbench\webb\Validation\InputValidator($a));
 
         return $instance;
     }
@@ -200,6 +202,7 @@ class ProjectServiceContainer extends Container
         $this->services['workbench\\webb\\Http\\Route\\ContactList'] = $instance = new \workbench\webb\Http\Route\ContactList();
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setContactPersonRepository(($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService()));
 
         return $instance;
     }
@@ -257,16 +260,6 @@ class ProjectServiceContainer extends Container
     }
 
     /**
-     * Gets the private 'asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer' shared autowired service.
-     *
-     * @return \asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer
-     */
-    protected function getContactPersonNormalizerService()
-    {
-        return $this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] = new \asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory())));
-    }
-
-    /**
      * Gets the private 'event_logger' shared autowired service.
      *
      * @return \Monolog\Logger
@@ -307,7 +300,7 @@ class ProjectServiceContainer extends Container
         $g->setEventDispatcher($d);
         $h = new \workbench\webb\CommandBus\CreateContactPersonHandler();
 
-        $i = $this->getContactPersonRepositoryInterfaceService();
+        $i = ($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService());
 
         $h->setContactPersonRepository($i);
         $h->setEventDispatcher($d);
@@ -322,13 +315,13 @@ class ProjectServiceContainer extends Container
     }
 
     /**
-     * Gets the private 'workbench\webb\Storage\ContactPersonRepositoryInterface' shared autowired service.
+     * Gets the private 'workbench\webb\Storage\ContactPersonRepository' shared autowired service.
      *
      * @return \workbench\webb\Storage\Yayson\YaysonContactPersonRepository
      */
-    protected function getContactPersonRepositoryInterfaceService()
+    protected function getContactPersonRepositoryService()
     {
-        return ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] ?? ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] = new \workbench\webb\Storage\Yayson\YaysondbFactory($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_DSN'))))->createContactPersonRepository(($this->privates['asylgrp\\decisionmaker\\Normalizer\\ContactPersonNormalizer'] ?? $this->getContactPersonNormalizerService()));
+        return $this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] = ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] ?? ($this->privates['workbench\\webb\\Storage\\Yayson\\YaysondbFactory'] = new \workbench\webb\Storage\Yayson\YaysondbFactory($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_DSN'))))->createContactPersonRepository(new \asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory()))));
     }
 
     /**

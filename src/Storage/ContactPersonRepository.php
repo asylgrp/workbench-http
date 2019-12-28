@@ -7,8 +7,23 @@ use workbench\webb\Exception\AccountNumberAlreadyExistException;
 use workbench\webb\Exception\ContactPersonAlreadyExistException;
 use workbench\webb\Exception\ContactPersonDoesNotExistException;
 
-interface ContactPersonRepositoryInterface
+interface ContactPersonRepository
 {
+    /**
+     * @return iterable<ContactPersonInterface>
+     */
+    public function activeContactPersons(): iterable;
+
+    /**
+     * @return iterable<ContactPersonInterface>
+     */
+    public function bannedContactPersons(): iterable;
+
+    /**
+     * @return iterable<ContactPersonInterface>
+     */
+    public function blockedContactPersons(): iterable;
+
     /**
      * @throws ContactPersonAlreadyExistException If contact person id exists in db
      * @throws AccountNumberAlreadyExistException If account number exists in db

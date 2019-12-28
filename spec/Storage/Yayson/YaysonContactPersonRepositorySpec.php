@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace spec\workbench\webb\Storage\Yayson;
 
 use workbench\webb\Storage\Yayson\YaysonContactPersonRepository;
-use workbench\webb\Storage\ContactPersonRepositoryInterface;
+use workbench\webb\Storage\ContactPersonRepository;
 use workbench\webb\Exception\AccountNumberAlreadyExistException;
 use workbench\webb\Exception\ContactPersonAlreadyExistException;
 use workbench\webb\Exception\ContactPersonDoesNotExistException;
@@ -40,7 +40,7 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
 
     function it_is_a_contact_person_repository()
     {
-        $this->shouldHaveType(ContactPersonRepositoryInterface::class);
+        $this->shouldHaveType(ContactPersonRepository::class);
     }
 
     function it_throws_on_creation_if_id_exists(ContactPersonInterface $contact, $normalizer)

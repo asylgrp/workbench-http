@@ -1,8 +1,13 @@
 TODO
 
-* Håller på med Contacts
-    * Nästa steg att visa collections..
-    * När det är gjort kan vi också få till behat!!
+* Nu kan vi visa listor på kontaktpersoner...
+    - nästa grej att få till behat om detta...
+
+* ContactPersonEventRecorder
+    som skapar en "event source" med datum av när någon skapats osv
+    historik
+    ska kunna visas om contact
+    datum för created och updated osv hämtas härifrån..
 
 * Validation
     ide att skriva om Clean med ValidationResultInterface

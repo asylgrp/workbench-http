@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace spec\workbench\webb\Storage\Yayson;
 
 use workbench\webb\Storage\Yayson\YaysondbFactory;
-use workbench\webb\Storage\ContactPersonRepositoryInterface;
+use workbench\webb\Storage\ContactPersonRepository;
 use workbench\webb\Storage\TransactionHandlerInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 
@@ -38,7 +38,7 @@ class YaysondbFactorySpec extends ObjectBehavior
 
     function it_creates_contact_person_repositories(ContactPersonNormalizer $normalizer)
     {
-        $this->createContactPersonRepository($normalizer)->shouldHaveType(ContactPersonRepositoryInterface::class);
+        $this->createContactPersonRepository($normalizer)->shouldHaveType(ContactPersonRepository::class);
     }
 
     function it_create_transaction_handlers()

@@ -7,7 +7,7 @@ namespace spec\workbench\webb\CommandBus;
 use workbench\webb\CommandBus\UpdateContactPersonHandler;
 use workbench\webb\CommandBus\UpdateContactPerson;
 use workbench\webb\Event\ContactPersonUpdated;
-use workbench\webb\Storage\ContactPersonRepositoryInterface;
+use workbench\webb\Storage\ContactPersonRepository;
 use asylgrp\decisionmaker\ContactPerson\ContactPersonInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ use Prophecy\Argument;
 
 class UpdateContactPersonHandlerSpec extends ObjectBehavior
 {
-    function let(ContactPersonRepositoryInterface $contactPersonRepository, EventDispatcherInterface $dispatcher)
+    function let(ContactPersonRepository $contactPersonRepository, EventDispatcherInterface $dispatcher)
     {
         $this->setContactPersonRepository($contactPersonRepository);
         $this->setEventDispatcher($dispatcher);

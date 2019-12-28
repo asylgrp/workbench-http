@@ -2,7 +2,7 @@
 
 namespace workbench\webb\Storage\Yayson;
 
-use workbench\webb\Storage\ContactPersonRepositoryInterface;
+use workbench\webb\Storage\ContactPersonRepository;
 use workbench\webb\Exception\AccountNumberAlreadyExistException;
 use workbench\webb\Exception\ContactPersonAlreadyExistException;
 use workbench\webb\Exception\ContactPersonDoesNotExistException;
@@ -11,7 +11,7 @@ use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\CollectionInterface;
 use hanneskod\yaysondb\Operators as y;
 
-final class YaysonContactPersonRepository implements ContactPersonRepositoryInterface
+final class YaysonContactPersonRepository implements ContactPersonRepository
 {
     /** @var CollectionInterface<array> */
     private CollectionInterface $collection;
@@ -24,6 +24,22 @@ final class YaysonContactPersonRepository implements ContactPersonRepositoryInte
     {
         $this->collection = $collection;
         $this->normalizer = $normalizer;
+    }
+
+    // TODO spec för dessa tre...
+    public function activeContactPersons(): iterable
+    {
+        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_ACTIVE);
+    }
+
+    public function bannedContactPersons(): iterable
+    {
+        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_BANNED);
+    }
+
+    public function blockedContactPersons(): iterable
+    {
+        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_BLOCKED);
     }
 
     public function createContactPerson(ContactPersonInterface $contactPerson): void
@@ -86,5 +102,17 @@ final class YaysonContactPersonRepository implements ContactPersonRepositoryInte
         }
 
         $this->collection->insert($data, $contactPerson->getId());
+    }
+
+    /**
+     * @return iterable<ContactPersonInterface>
+     */
+    private function findContactPersons(string $status): iterable
+    {
+        $expr = y::doc(['status' => y::equals($status)]);
+
+        foreach ($this->collection->find($expr) as $doc) {
+            yield $this->normalizer->denormalize($doc, ContactPersonInterface::class);
+        }
     }
 }

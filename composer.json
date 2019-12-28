@@ -30,6 +30,7 @@
         "byrokrat/id": "^2",
         "hanneskod/yaysondb": "^2.2",
         "inroutephp/inroute": "^1",
+        "lcobucci/clock": "^1",
         "league/tactician": "^1",
         "middlewares/access-log": "^1.2",
         "middlewares/robots": "^2",
