@@ -28,6 +28,7 @@
         "asylgrp/economix": "dev-master",
         "byrokrat/banking": "^2.1",
         "byrokrat/id": "^2",
+        "hanneskod/clean": "^3",
         "hanneskod/yaysondb": "^2.2",
         "inroutephp/inroute": "^1",
         "lcobucci/clock": "^1",
@@ -46,7 +47,8 @@
         "symfony/dependency-injection": "^5",
         "twbs/bootstrap": "^4.4",
         "zendframework/zend-diactoros": "^2.0",
-        "zendframework/zend-httphandlerrunner": "^1.0"
+        "zendframework/zend-httphandlerrunner": "^1.0",
+        "edwinhoksberg/octicons-php": "^1.0"
     },
     "require-dev": {
         "ext-xmlwriter": "*",

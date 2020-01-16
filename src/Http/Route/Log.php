@@ -4,22 +4,30 @@ declare(strict_types = 1);
 
 namespace workbench\webb\Http\Route;
 
-use workbench\webb\DependencyInjection\MustacheProperty;
 use inroutephp\inroute\Annotations\GET;
 use inroutephp\inroute\Runtime\EnvironmentInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response\HtmlResponse;
 
-final class Log
+final class Log extends AbstractRoute
 {
-    use MustacheProperty;
+    private string $logFile;
+
+    public function __construct(string $logFile)
+    {
+        $this->logFile = $logFile;
+    }
 
     /**
-     * @GET(path="/log")
+     * @GET(path="/log", name="log")
      */
-    public function list(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
+    public function list(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse($this->mustache->render('log', []));
+        return $this->render(
+            'log',
+            $request,
+            $env,
+            ['log' => file_get_contents($this->logFile)]
+        );
     }
 }

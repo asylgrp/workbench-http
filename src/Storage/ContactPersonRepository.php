@@ -12,17 +12,7 @@ interface ContactPersonRepository
     /**
      * @return iterable<ContactPersonInterface>
      */
-    public function activeContactPersons(): iterable;
-
-    /**
-     * @return iterable<ContactPersonInterface>
-     */
-    public function bannedContactPersons(): iterable;
-
-    /**
-     * @return iterable<ContactPersonInterface>
-     */
-    public function blockedContactPersons(): iterable;
+    public function contactPersons(): iterable;
 
     /**
      * @throws ContactPersonAlreadyExistException If contact person id exists in db

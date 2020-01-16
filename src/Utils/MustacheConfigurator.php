@@ -11,7 +11,7 @@ class MustacheConfigurator
     public function configureMustache(Mustache_Engine $mustache): void
     {
         $mustache->addHelper('nl2br', function ($value) {
-            return nl2br($value);
+            return nl2br((string)$value);
         });
     }
 }

@@ -25,7 +25,7 @@ final class Resources
     }
 
     /**
-     * @GET(path="/bootstrap.min.css", name="bootstrap.min.css")
+     * @GET(path="/bootstrap.css", name="bootstrap.css")
      */
     public function bootstrap(ServerRequestInterface $request, EnvironmentInterface $environment): ResponseInterface
     {

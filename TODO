@@ -3,34 +3,18 @@ TODO
 * Nu kan vi visa listor på kontaktpersoner...
     - nästa grej att få till behat om detta...
 
+Update to laminas instead of zend framework
+    gäller även inroute repos såklart...
+
+catch (Throwable) till workbench-webb...
+
+* Implementera validators!
+
 * ContactPersonEventRecorder
     som skapar en "event source" med datum av när någon skapats osv
     historik
     ska kunna visas om contact
     datum för created och updated osv hämtas härifrån..
 
-* Validation
-    ide att skriva om Clean med ValidationResultInterface
-
-    getInputValidator() {
-        return new ArrayValidator([
-            'id' => Validator::contactId(),
-            'accont' => Validator::account(),
-            osv...
-        ]);
-    }
-
-    Och sedan för ArrayResult
-        isValid()
-        getValidData() // generics template, returns det som skickas in??
-        getErrors() // generics här med???
-
 * KP: name ska också vara unikt när vi skapar till db!
-    - även telefonnummer??
-
-* CommandBus
-    CreateClaim
-    DeleteClaim
-    ClearClaims
-    CreateDecision
-    DeleteDecision
+    - även telefonnummer??, mail??

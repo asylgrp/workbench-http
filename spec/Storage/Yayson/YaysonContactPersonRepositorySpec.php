@@ -80,6 +80,23 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $this->shouldThrow(AccountNumberAlreadyExistException::class)->duringCreateContactPerson($bar);
     }
 
+    function it_creates(ContactPersonInterface $contact, $normalizer)
+    {
+        $contact->getId()->willReturn('id');
+
+        $doc = [
+            'id' => 'id',
+            'account' => 'account',
+        ];
+
+        $normalizer->normalize($contact)->willReturn($doc);
+        $normalizer->denormalize($doc, ContactPersonInterface::class)->willReturn($contact);
+
+        $this->createContactPerson($contact);
+
+        $this->contactPersons()->shouldIterateAs([$contact]);
+    }
+
     function it_throws_on_delete_unknown(ContactPersonInterface $contact)
     {
         $contact->getId()->willReturn('does-not-exist');

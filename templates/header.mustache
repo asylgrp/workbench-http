@@ -1,70 +1,79 @@
+{{% FILTERS }}
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Workbench2</title>
-<script src="/trimmings.js"></script>
-<link href="/bootstrap.min.css" rel="stylesheet">
+<script src="{{links.trimmings_js.href}}"></script>
+<link href="{{links.bootstrap_css.href}}" rel="stylesheet">
 
 <style>
 body {padding-top: 5rem;}
 h1 {padding-bottom: 1rem;}
+a .wb-icon {fill: grey;}
+a:hover .wb-icon {fill: lightgrey;}
+.wb-table {margin-top: 2rem;}
+.wb-contacts-table tbody tr {display: none;}
+.wb-display-active tr.wb-active {display: table-row;}
+.wb-display-blocked tr.wb-blocked {display: table-row;}
+.wb-display-banned tr.wb-banned {display: table-row;}
+button.wb-active, button.wb-blocked, button.wb-banned {color: darkgrey!important;}
+.wb-display-active button.wb-active, .wb-display-blocked button.wb-blocked, .wb-display-banned button.wb-banned {color: white!important;}
+
+@media screen and (max-width: 750px) {
+  .wb-screen-medium {display: none;}
+}
+
+@media screen and (max-width: 1000px) {
+  .wb-screen-wide {display: none;}
+}
 </style>
 
 </head>
-<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-
-  <a class="navbar-brand" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/">W2</a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#w2-navbar" aria-controls="w2-navbar" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="w2-navbar">
+<body class="wb-display-active wb-display-blocked">
+<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.billboard.href}}">W2</a>
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown-kp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kontaktpersoner</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown-kp">
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/contacts/new">Lägg till</a>
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/contacts/active">Aktiva</a>
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/contacts/banned">Spärrade</a>
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/contacts/blocked">Blockerade</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown-ansok" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ansökningar</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown-ansok">
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/claims/new">Lägg till</a>
-          <a class="dropdown-item" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/claims">Lista</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/decisions">Beslut</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="/log">Händelser</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/sign-out">Logga ut</a>
-      </li>
+        <li class="nav-item">
+            <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.contacts.href}}">
+                <span class="wb-icon">{{{links.contacts.icon}}}</span>
+                <span class="wb-screen-medium">Kontaktpersoner</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.claims.href}}">
+                <span class="wb-icon">{{{links.claims.icon}}}</span>
+                <span class="wb-screen-medium">Ansökningar</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.decisions.href}}">
+                <span class="wb-icon">{{{links.decisions.icon}}}</span>
+                <span class="wb-screen-medium">Beslut</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.log.href}}">
+                <span class="wb-icon">{{{links.log.icon}}}</span>
+                <span class="wb-screen-medium">Händelser</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{links.sign-out.href}}">
+                <span class="wb-icon">{{{links.sign-out.icon}}}</span>
+                <span class="wb-screen-medium">Logga ut</span>
+            </a>
+        </li>
     </ul>
-
-    <!-- TODO anticipating a search implementation... -->
-    <!--form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Sök" aria-label="Sök">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Sök</button>
-    </form-->
-  </div>
 </nav>
 
 <main role="main" class="container">
 
 {{# alert:success}}
-<div class="alert alert-success" role="alert">{{{.}}}</div>
+    <div class="alert alert-success" role="alert">{{{.|nl2br}}}</div>
 {{/ alert:success}}
 
 {{# alert:error}}
-<div class="alert alert-danger" role="alert">{{{.}}}</div>
+    <div class="alert alert-danger" role="alert">{{{.|nl2br}}}</div>
 {{/ alert:error}}

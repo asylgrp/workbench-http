@@ -1,28 +1,43 @@
 {{> header }}
 
-<h1>{{desc}} kontaktpersoner</h1>
+<h1>Kontaktpersoner</h1>
 
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Namn</th>
-      <th scope="col">Kontonummer</th>
-      <th scope="col">Mail</th>
-      <th scope="col">Tel</th>
-      <th scope="col">Kommentar</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{# contacts}}
-      <tr>
-          <td><a href="/contacts/{{getId}}">{{getName}}</a></td>
-          <td>{{getAccount}}</td>
-          <td><a href="mailto:{{getMail}}">{{getMail}}</a></td>
-          <td><a href="tel:{{getPhone}}">{{getPhone}}</a></td>
-          <td>{{getComment}}</td>
-      </tr>
-    {{/ contacts}}
-  </tbody>
+<div class="btn-toolbar" role="toolbar" aria-label="Hantera kontaktpersoner">
+    <div class="btn-group mr-2" role="group" aria-label="Visa">
+        <button type="button" class="wb-active btn btn-secondary" data-trimmings-toggle="body, wb-display-active">aktiva</button>
+        <button type="button" class="wb-blocked btn btn-secondary" data-trimmings-toggle="body, wb-display-blocked">spärrade</button>
+        <button type="button" class="wb-banned btn btn-secondary" data-trimmings-toggle="body, wb-display-banned">bannlysta</button>
+    </div>
+    <div class="btn-group" role="group" aria-label="Ny">
+        <a data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{links.new-contact-form.href}}">
+            <button type="button" class="btn btn-primary">skapa ny</button>
+        </a>
+    </div>
+</div>
+
+<table class="wb-table wb-contacts-table table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Namn</th>
+            <th scope="col" class="wb-screen-medium">Kontonummer</th>
+            <th scope="col">Mail</th>
+            <th scope="col" class="wb-screen-medium">Tel</th>
+            <th scope="col" class="wb-screen-wide">Kommentar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{# contacts}}
+            <tr class="{{css}}">
+                <td>{{{icon}}}</td>
+                <td><a href="{{link}}">{{name}}</a></td>
+                <td class="wb-screen-medium">{{account}}</td>
+                <td><a href="mailto:{{mail}}">{{mail}}</a></td>
+                <td class="wb-screen-medium"><a href="tel:{{phone}}">{{phone}}</a></td>
+                <td class="wb-screen-wide">{{comment}}</td>
+            </tr>
+        {{/ contacts}}
+    </tbody>
 </table>
 
 {{> footer }}

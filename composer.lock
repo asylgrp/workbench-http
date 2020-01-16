@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d72e1d96947fb076318c91318fd3ebdd",
+    "content-hash": "3c36c7fae07753d0ad77f9075835fe3b",
     "packages": [
         {
             "name": "asylgrp/economix",
@@ -359,6 +359,57 @@
             "time": "2019-03-26T15:42:07+00:00"
         },
         {
+            "name": "edwinhoksberg/octicons-php",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdwinHoksberg/octicons-php.git",
+                "reference": "aa1558a5730fc5ccb621b366a51f13d8e90b6759"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdwinHoksberg/octicons-php/zipball/aa1558a5730fc5ccb621b366a51f13d8e90b6759",
+                "reference": "aa1558a5730fc5ccb621b366a51f13d8e90b6759",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^6.5",
+                "satooshi/php-coveralls": "^2.0",
+                "twig/twig": "^2.4"
+            },
+            "suggest": {
+                "twig/twig": "A helper function is available for twig for creating icons easily in twig templates."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Octicons\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Edwin Hoksberg",
+                    "email": "mail@edwinhoksberg.nl"
+                }
+            ],
+            "description": "A simple PHP library for displaying the Github Octicons font icons in svg format.",
+            "keywords": [
+                "github",
+                "icons",
+                "octicons",
+                "svg"
+            ],
+            "time": "2019-08-09T11:32:01+00:00"
+        },
+        {
             "name": "fig/event-dispatcher-util",
             "version": "1.1.0",
             "source": {
@@ -408,6 +459,51 @@
                 "psr-14"
             ],
             "time": "2019-04-03T18:45:35+00:00"
+        },
+        {
+            "name": "hanneskod/clean",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hanneskod/clean.git",
+                "reference": "151d1996263ec0d8aeed5127ce5c9e3a906cc60a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hanneskod/clean/zipball/151d1996263ec0d8aeed5127ce5c9e3a906cc60a",
+                "reference": "151d1996263ec0d8aeed5127ce5c9e3a906cc60a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "hanneskod\\clean\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Hannes Forsgård",
+                    "email": "hannes.forsgard@fripost.org"
+                }
+            ],
+            "description": "A clean (as in simple) data cleaner (as in validation tool)",
+            "homepage": "https://github.com/hanneskod/clean",
+            "keywords": [
+                "input validation",
+                "validation",
+                "validator"
+            ],
+            "time": "2020-01-01T01:05:15+00:00"
         },
         {
             "name": "hanneskod/yaysondb",
@@ -569,16 +665,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.61",
+            "version": "1.0.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9"
+                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4fb13c01784a6c9f165a351e996871488ca2d8c9",
-                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
+                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
                 "shasum": ""
             },
             "require": {
@@ -649,7 +745,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-12-08T21:46:50+00:00"
+            "time": "2019-12-29T14:46:55+00:00"
         },
         {
             "name": "league/tactician",
@@ -2046,6 +2142,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-11-13T19:16:13+00:00"
         },
         {
@@ -2101,6 +2198,7 @@
                 "psr-7",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-httphandlerrunner",
             "time": "2019-02-19T18:20:34+00:00"
         }
     ],
@@ -2146,16 +2244,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508"
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
                 "shasum": ""
             },
             "require": {
@@ -2174,7 +2272,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -2203,7 +2301,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2019-12-25T10:00:00+00:00"
+            "time": "2019-12-29T10:00:00+00:00"
         },
         {
             "name": "league/flysystem-memory",

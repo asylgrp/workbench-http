@@ -26,20 +26,11 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
         $this->normalizer = $normalizer;
     }
 
-    // TODO spec för dessa tre...
-    public function activeContactPersons(): iterable
+    public function contactPersons(): iterable
     {
-        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_ACTIVE);
-    }
-
-    public function bannedContactPersons(): iterable
-    {
-        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_BANNED);
-    }
-
-    public function blockedContactPersons(): iterable
-    {
-        yield from $this->findContactPersons(ContactPersonNormalizer::STATUS_BLOCKED);
+        foreach ($this->collection as $doc) {
+            yield $this->normalizer->denormalize($doc, ContactPersonInterface::class);
+        }
     }
 
     public function createContactPerson(ContactPersonInterface $contactPerson): void
@@ -102,17 +93,5 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
         }
 
         $this->collection->insert($data, $contactPerson->getId());
-    }
-
-    /**
-     * @return iterable<ContactPersonInterface>
-     */
-    private function findContactPersons(string $status): iterable
-    {
-        $expr = y::doc(['status' => y::equals($status)]);
-
-        foreach ($this->collection->find($expr) as $doc) {
-            yield $this->normalizer->denormalize($doc, ContactPersonInterface::class);
-        }
     }
 }

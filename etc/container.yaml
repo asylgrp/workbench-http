@@ -26,6 +26,11 @@ services:
         resource: '../src/Http/Route/*'
         public: true
 
+    workbench\webb\Http\Route\Log:
+        class: ~
+        arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_EVENT_LOG)%']
+        public: true
+
     Psr\Http\Server\RequestHandlerInterface:
         class: inroutephp\inroute\Runtime\Middleware\Pipeline
         public: true

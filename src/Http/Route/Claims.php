@@ -4,67 +4,64 @@ declare(strict_types = 1);
 
 namespace workbench\webb\Http\Route;
 
-use workbench\webb\DependencyInjection\MustacheProperty;
-use inroutephp\inroute\Annotations\BasePath;
 use inroutephp\inroute\Annotations\GET;
 use inroutephp\inroute\Annotations\POST;
 use inroutephp\inroute\Runtime\EnvironmentInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response\HtmlResponse;
 
-/**
- * @BasePath(path="/claims")
- */
-final class Claims
+final class Claims extends AbstractRoute
 {
-    use MustacheProperty;
-
     /**
-     * @GET(path="")
+     * @GET(path="/claims", name="claims")
      */
     public function list(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse($this->mustache->render('claim-list', []));
+        return $this->render('claim-list', $request, $env);
     }
 
     /**
-     * @GET(path="/new")
+     * @GET(path="/forms/new-claim", name="new-claim-form")
      */
     public function newForm(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse($this->mustache->render('claim-form', []));
+        return $this->render(
+            'claim-form',
+            $request,
+            $env,
+            ['form:target' => $env->getUrlGenerator()->generateUrl('claims')]
+        );
     }
 
     /**
-     * @POST(path="/new")
+     * @POST(path="/claims")
      */
     public function createNew(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse('');
+        return $this->render('claim-form', $request, $env);
     }
 
     /**
-     * @GET(path="/{id}")
+     * @GET(path="/claims/{id}", name="claim")
      */
     public function get(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse('');
+        return $this->render('claim-form', $request, $env);
     }
 
     /**
-     * @POST(path="/{id}/delete")
+     * @POST(path="/claims/{id}/delete", name="claim-delete")
      */
     public function delete(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse('');
+        return $this->render('claim-form', $request, $env);
     }
 
     /**
-     * @POST(path="/purge")
+     * @POST(path="/clear-claims", name="clear-claims")
      */
     public function purge(ServerRequestInterface $request, EnvironmentInterface $env): ResponseInterface
     {
-        return new HtmlResponse('');
+        return $this->render('claim-form', $request, $env);
     }
 }

@@ -34,11 +34,15 @@ class ProjectServiceContainer extends Container
             'Psr\\Http\\Server\\RequestHandlerInterface' => 'getRequestHandlerInterfaceService',
             'workbench\\webb\\Http\\Route\\Billboard' => 'getBillboardService',
             'workbench\\webb\\Http\\Route\\Claims' => 'getClaimsService',
-            'workbench\\webb\\Http\\Route\\Contact' => 'getContactService',
-            'workbench\\webb\\Http\\Route\\ContactList' => 'getContactListService',
+            'workbench\\webb\\Http\\Route\\ContactCreate' => 'getContactCreateService',
+            'workbench\\webb\\Http\\Route\\ContactDelete' => 'getContactDeleteService',
+            'workbench\\webb\\Http\\Route\\ContactRead' => 'getContactReadService',
+            'workbench\\webb\\Http\\Route\\ContactUpdate' => 'getContactUpdateService',
+            'workbench\\webb\\Http\\Route\\Contacts' => 'getContactsService',
             'workbench\\webb\\Http\\Route\\Decisions' => 'getDecisionsService',
             'workbench\\webb\\Http\\Route\\Log' => 'getLogService',
             'workbench\\webb\\Http\\Route\\Resources' => 'getResourcesService',
+            'workbench\\webb\\Http\\Route\\SignOut' => 'getSignOutService',
         ];
 
         $this->aliases = [];
@@ -109,9 +113,7 @@ class ProjectServiceContainer extends Container
             'workbench\\webb\\Storage\\Yayson\\YaysonTransactionHandler' => true,
             'workbench\\webb\\Storage\\Yayson\\YaysondbFactory' => true,
             'workbench\\webb\\Utils\\MustacheConfigurator' => true,
-            'workbench\\webb\\Validation\\InputValidator' => true,
-            'workbench\\webb\\Validation\\Invalid' => true,
-            'workbench\\webb\\Validation\\Valid' => true,
+            'workbench\\webb\\Utils\\Validators' => true,
         ];
     }
 
@@ -175,31 +177,74 @@ class ProjectServiceContainer extends Container
     }
 
     /**
-     * Gets the public 'workbench\webb\Http\Route\Contact' shared autowired service.
+     * Gets the public 'workbench\webb\Http\Route\ContactCreate' shared autowired service.
      *
-     * @return \workbench\webb\Http\Route\Contact
+     * @return \workbench\webb\Http\Route\ContactCreate
      */
-    protected function getContactService()
+    protected function getContactCreateService()
     {
-        $a = ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory()));
-
-        $this->services['workbench\\webb\\Http\\Route\\Contact'] = $instance = new \workbench\webb\Http\Route\Contact($a);
+        $this->services['workbench\\webb\\Http\\Route\\ContactCreate'] = $instance = new \workbench\webb\Http\Route\ContactCreate(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory())));
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
         $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
-        $instance->setInputValidator(new \workbench\webb\Validation\InputValidator($a));
+        $instance->setEventDispatcher(($this->privates['Psr\\EventDispatcher\\EventDispatcherInterface'] ?? $this->getEventDispatcherInterfaceService()));
 
         return $instance;
     }
 
     /**
-     * Gets the public 'workbench\webb\Http\Route\ContactList' shared autowired service.
+     * Gets the public 'workbench\webb\Http\Route\ContactDelete' shared autowired service.
      *
-     * @return \workbench\webb\Http\Route\ContactList
+     * @return \workbench\webb\Http\Route\ContactDelete
      */
-    protected function getContactListService()
+    protected function getContactDeleteService()
     {
-        $this->services['workbench\\webb\\Http\\Route\\ContactList'] = $instance = new \workbench\webb\Http\Route\ContactList();
+        $this->services['workbench\\webb\\Http\\Route\\ContactDelete'] = $instance = new \workbench\webb\Http\Route\ContactDelete();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\ContactRead' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\ContactRead
+     */
+    protected function getContactReadService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\ContactRead'] = $instance = new \workbench\webb\Http\Route\ContactRead();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\ContactUpdate' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\ContactUpdate
+     */
+    protected function getContactUpdateService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\ContactUpdate'] = $instance = new \workbench\webb\Http\Route\ContactUpdate(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory())));
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
+        $instance->setEventDispatcher(($this->privates['Psr\\EventDispatcher\\EventDispatcherInterface'] ?? $this->getEventDispatcherInterfaceService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\Contacts' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\Contacts
+     */
+    protected function getContactsService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\Contacts'] = $instance = new \workbench\webb\Http\Route\Contacts();
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
         $instance->setContactPersonRepository(($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService()));
@@ -228,7 +273,7 @@ class ProjectServiceContainer extends Container
      */
     protected function getLogService()
     {
-        $this->services['workbench\\webb\\Http\\Route\\Log'] = $instance = new \workbench\webb\Http\Route\Log();
+        $this->services['workbench\\webb\\Http\\Route\\Log'] = $instance = new \workbench\webb\Http\Route\Log($this->getEnv('WORKB_BASE_DIR').'/'.$this->getEnv('string:WORKB_EVENT_LOG'));
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
 
@@ -246,6 +291,20 @@ class ProjectServiceContainer extends Container
     }
 
     /**
+     * Gets the public 'workbench\webb\Http\Route\SignOut' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\SignOut
+     */
+    protected function getSignOutService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\SignOut'] = $instance = new \workbench\webb\Http\Route\SignOut();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
+    }
+
+    /**
      * Gets the private 'Mustache_Engine' shared autowired service.
      *
      * @return \Mustache_Engine
@@ -257,6 +316,23 @@ class ProjectServiceContainer extends Container
         (new \workbench\webb\Utils\MustacheConfigurator())->configureMustache($instance);
 
         return $instance;
+    }
+
+    /**
+     * Gets the private 'Psr\EventDispatcher\EventDispatcherInterface' shared autowired service.
+     *
+     * @return \Crell\Tukio\Dispatcher
+     */
+    protected function getEventDispatcherInterfaceService()
+    {
+        $a = new \Fig\EventDispatcher\AggregateProvider();
+
+        $b = new \Crell\Tukio\OrderedListenerProvider(($this->services['Psr\\Container\\ContainerInterface'] ?? $this->get('Psr\\Container\\ContainerInterface', 1)));
+        $b->addListener(new \workbench\webb\Event\Listener\LoggingListener(($this->privates['event_logger'] ?? $this->getEventLoggerService())));
+
+        $a->addProvider($b);
+
+        return $this->privates['Psr\\EventDispatcher\\EventDispatcherInterface'] = new \Crell\Tukio\Dispatcher($a);
     }
 
     /**
@@ -282,36 +358,29 @@ class ProjectServiceContainer extends Container
     {
         $a = new \workbench\webb\CommandBus\LoggingMiddleware();
 
-        $b = new \Fig\EventDispatcher\AggregateProvider();
+        $b = ($this->privates['Psr\\EventDispatcher\\EventDispatcherInterface'] ?? $this->getEventDispatcherInterfaceService());
 
-        $c = new \Crell\Tukio\OrderedListenerProvider(($this->services['Psr\\Container\\ContainerInterface'] ?? $this->get('Psr\\Container\\ContainerInterface', 1)));
-        $c->addListener(new \workbench\webb\Event\Listener\LoggingListener(($this->privates['event_logger'] ?? $this->getEventLoggerService())));
+        $a->setEventDispatcher($b);
+        $c = $this->getTransactionHandlerInterfaceService();
 
-        $b->addProvider($c);
+        $d = new \workbench\webb\CommandBus\CommitHandler($c);
+        $d->setEventDispatcher($b);
+        $e = new \workbench\webb\CommandBus\RollbackHandler($c);
+        $e->setEventDispatcher($b);
+        $f = new \workbench\webb\CommandBus\CreateContactPersonHandler();
 
-        $d = new \Crell\Tukio\Dispatcher($b);
+        $g = ($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService());
 
-        $a->setEventDispatcher($d);
-        $e = $this->getTransactionHandlerInterfaceService();
+        $f->setContactPersonRepository($g);
+        $f->setEventDispatcher($b);
+        $h = new \workbench\webb\CommandBus\DeleteContactPersonHandler();
+        $h->setContactPersonRepository($g);
+        $h->setEventDispatcher($b);
+        $i = new \workbench\webb\CommandBus\UpdateContactPersonHandler();
+        $i->setContactPersonRepository($g);
+        $i->setEventDispatcher($b);
 
-        $f = new \workbench\webb\CommandBus\CommitHandler($e);
-        $f->setEventDispatcher($d);
-        $g = new \workbench\webb\CommandBus\RollbackHandler($e);
-        $g->setEventDispatcher($d);
-        $h = new \workbench\webb\CommandBus\CreateContactPersonHandler();
-
-        $i = ($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService());
-
-        $h->setContactPersonRepository($i);
-        $h->setEventDispatcher($d);
-        $j = new \workbench\webb\CommandBus\DeleteContactPersonHandler();
-        $j->setContactPersonRepository($i);
-        $j->setEventDispatcher($d);
-        $k = new \workbench\webb\CommandBus\UpdateContactPersonHandler();
-        $k->setContactPersonRepository($i);
-        $k->setEventDispatcher($d);
-
-        return $this->privates['workbench\\webb\\CommandBus\\CommandBus'] = new \workbench\webb\CommandBus\CommandBus(new \League\Tactician\CommandBus([0 => $a, 1 => new \League\Tactician\Handler\CommandHandlerMiddleware(new \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor(), new \League\Tactician\Handler\Locator\InMemoryLocator(['workbench\\webb\\CommandBus\\Commit' => $f, 'workbench\\webb\\CommandBus\\Rollback' => $g, 'workbench\\webb\\CommandBus\\CreateContactPerson' => $h, 'workbench\\webb\\CommandBus\\DeleteContactPerson' => $j, 'workbench\\webb\\CommandBus\\UpdateContactPerson' => $k]), new \League\Tactician\Handler\MethodNameInflector\HandleInflector())]));
+        return $this->privates['workbench\\webb\\CommandBus\\CommandBus'] = new \workbench\webb\CommandBus\CommandBus(new \League\Tactician\CommandBus([0 => $a, 1 => new \League\Tactician\Handler\CommandHandlerMiddleware(new \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor(), new \League\Tactician\Handler\Locator\InMemoryLocator(['workbench\\webb\\CommandBus\\Commit' => $d, 'workbench\\webb\\CommandBus\\Rollback' => $e, 'workbench\\webb\\CommandBus\\CreateContactPerson' => $f, 'workbench\\webb\\CommandBus\\DeleteContactPerson' => $h, 'workbench\\webb\\CommandBus\\UpdateContactPerson' => $i]), new \League\Tactician\Handler\MethodNameInflector\HandleInflector())]));
     }
 
     /**
