@@ -1,12 +1,9 @@
 TODO
 
-// Håller på med contact
-    * Delete kontaktperson: borde vi inte ha någon popup som kollar om en verkligen vill fortsätta??
+* Enkel behat för allt det här som har med contacts att göra. CRUD.
+    - så många test som jag orkar..
 
 // byta namn på Storage => Db?
-
-* Nu kan vi visa listor på kontaktpersoner...
-    - nästa grej att få till behat om detta...
 
 Update to laminas instead of zend framework
     gäller även inroute repos såklart...

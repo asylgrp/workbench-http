@@ -64,7 +64,7 @@
     <h3>Radera</h3>
     OBS! Detta kan inte ångras. Registrerade ansökningar raderas inte.
     <p class="wb-margin-top">
-        <form action="{{contact.links.delete.href}}" method="post">
+        <form action="{{contact.links.delete.href}}" method="post" onsubmit="return confirm('Är du säkert på att du vill radera {{contact.name}}? Detta kan inte ångras.');">
             <button type="submit" class="btn btn-secondary">
                 {{{contact.links.delete.icon}}}&nbsp;&nbsp;radera kontaktperson
             </button>
