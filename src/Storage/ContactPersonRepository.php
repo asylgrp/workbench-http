@@ -12,7 +12,12 @@ interface ContactPersonRepository
     /**
      * @return iterable<ContactPersonInterface>
      */
-    public function contactPersons(): iterable;
+    public function allContactPersons(): iterable;
+
+    /**
+     * @throws ContactPersonDoesNotExistException If contact person can not be found
+     */
+    public function contactPersonFromId(string $id): ContactPersonInterface;
 
     /**
      * @throws ContactPersonAlreadyExistException If contact person id exists in db

@@ -22,7 +22,7 @@ final class Contacts extends AbstractRoute
     {
         $contacts = [];
 
-        foreach ($this->contactPersonRepository->contactPersons() as $contact) {
+        foreach ($this->contactPersonRepository->allContactPersons() as $contact) {
             $css = [];
             $icon = '';
 

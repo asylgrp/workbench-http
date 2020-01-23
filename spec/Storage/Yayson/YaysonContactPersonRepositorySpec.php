@@ -94,7 +94,29 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
 
         $this->createContactPerson($contact);
 
-        $this->contactPersons()->shouldIterateAs([$contact]);
+        $this->allContactPersons()->shouldIterateAs([$contact]);
+    }
+
+    function it_throw_if_contact_person_does_not_exist()
+    {
+        $this->shouldThrow(ContactPersonDoesNotExistException::class)->duringContactPersonFromId('does-not-exist');
+    }
+
+    function it_can_fetch_contact_person(ContactPersonInterface $contact, $normalizer)
+    {
+        $contact->getId()->willReturn('id');
+
+        $doc = [
+            'id' => 'id',
+            'account' => 'account',
+        ];
+
+        $normalizer->normalize($contact)->willReturn($doc);
+        $normalizer->denormalize($doc, ContactPersonInterface::class)->willReturn($contact);
+
+        $this->createContactPerson($contact);
+
+        $this->contactPersonFromId('id')->shouldReturn($contact);
     }
 
     function it_throws_on_delete_unknown(ContactPersonInterface $contact)

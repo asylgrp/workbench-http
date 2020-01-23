@@ -26,7 +26,19 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
         $this->normalizer = $normalizer;
     }
 
-    public function contactPersons(): iterable
+    /**
+     * @throws ContactPersonDoesNotExistException If contact person can not be found
+     */
+    public function contactPersonFromId(string $id): ContactPersonInterface
+    {
+        if (!$this->collection->has($id)) {
+            throw new ContactPersonDoesNotExistException("Unable to find contact person with id $id");
+        }
+
+        return $this->normalizer->denormalize($this->collection->read($id), ContactPersonInterface::class);
+    }
+
+    public function allContactPersons(): iterable
     {
         foreach ($this->collection as $doc) {
             yield $this->normalizer->denormalize($doc, ContactPersonInterface::class);

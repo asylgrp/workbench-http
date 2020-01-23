@@ -1,5 +1,10 @@
 TODO
 
+// Håller på med contact
+    * Delete kontaktperson: borde vi inte ha någon popup som kollar om en verkligen vill fortsätta??
+
+// byta namn på Storage => Db?
+
 * Nu kan vi visa listor på kontaktpersoner...
     - nästa grej att få till behat om detta...
 
@@ -17,4 +22,3 @@ catch (Throwable) till workbench-webb...
     datum för created och updated osv hämtas härifrån..
 
 * KP: name ska också vara unikt när vi skapar till db!
-    - även telefonnummer??, mail??

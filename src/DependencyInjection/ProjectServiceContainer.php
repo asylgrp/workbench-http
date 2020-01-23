@@ -36,6 +36,8 @@ class ProjectServiceContainer extends Container
             'workbench\\webb\\Http\\Route\\Claims' => 'getClaimsService',
             'workbench\\webb\\Http\\Route\\ContactCreate' => 'getContactCreateService',
             'workbench\\webb\\Http\\Route\\ContactDelete' => 'getContactDeleteService',
+            'workbench\\webb\\Http\\Route\\ContactHistory' => 'getContactHistoryService',
+            'workbench\\webb\\Http\\Route\\ContactPayouts' => 'getContactPayoutsService',
             'workbench\\webb\\Http\\Route\\ContactRead' => 'getContactReadService',
             'workbench\\webb\\Http\\Route\\ContactUpdate' => 'getContactUpdateService',
             'workbench\\webb\\Http\\Route\\Contacts' => 'getContactsService',
@@ -202,7 +204,36 @@ class ProjectServiceContainer extends Container
         $this->services['workbench\\webb\\Http\\Route\\ContactDelete'] = $instance = new \workbench\webb\Http\Route\ContactDelete();
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setContactPersonRepository(($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService()));
         $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\ContactHistory' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\ContactHistory
+     */
+    protected function getContactHistoryService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\ContactHistory'] = $instance = new \workbench\webb\Http\Route\ContactHistory();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the public 'workbench\webb\Http\Route\ContactPayouts' shared autowired service.
+     *
+     * @return \workbench\webb\Http\Route\ContactPayouts
+     */
+    protected function getContactPayoutsService()
+    {
+        $this->services['workbench\\webb\\Http\\Route\\ContactPayouts'] = $instance = new \workbench\webb\Http\Route\ContactPayouts();
+
+        $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
 
         return $instance;
     }
@@ -217,6 +248,7 @@ class ProjectServiceContainer extends Container
         $this->services['workbench\\webb\\Http\\Route\\ContactRead'] = $instance = new \workbench\webb\Http\Route\ContactRead();
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setContactPersonRepository(($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService()));
 
         return $instance;
     }
@@ -231,6 +263,7 @@ class ProjectServiceContainer extends Container
         $this->services['workbench\\webb\\Http\\Route\\ContactUpdate'] = $instance = new \workbench\webb\Http\Route\ContactUpdate(($this->privates['byrokrat\\banking\\AccountFactoryInterface'] ?? ($this->privates['byrokrat\\banking\\AccountFactoryInterface'] = new \byrokrat\banking\AccountFactory())));
 
         $instance->setMustacheEngine(($this->privates['Mustache_Engine'] ?? $this->getMustacheEngineService()));
+        $instance->setContactPersonRepository(($this->privates['workbench\\webb\\Storage\\ContactPersonRepository'] ?? $this->getContactPersonRepositoryService()));
         $instance->setCommandBus(($this->privates['workbench\\webb\\CommandBus\\CommandBus'] ?? $this->getCommandBusService()));
         $instance->setEventDispatcher(($this->privates['Psr\\EventDispatcher\\EventDispatcherInterface'] ?? $this->getEventDispatcherInterfaceService()));
 

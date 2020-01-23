@@ -57,6 +57,38 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     [
         'inroutephp\\inroute\\Runtime\\Route' => [
             'name' => [
+                'contact-payouts',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}/payouts',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\ContactPayouts',
+            ],
+            'serviceMethod' => [
+                'get',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
                 'contact',
             ],
             'routable' => [
@@ -587,6 +619,38 @@ $mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
             ],
             'serviceMethod' => [
                 'post',
+            ],
+        ],
+    ],
+    $o[0],
+    []
+));
+$mapper->mapRoute(\Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['inroutephp\\inroute\\Runtime\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('inroutephp\\inroute\\Runtime\\Route')),
+    ],
+    null,
+    [
+        'inroutephp\\inroute\\Runtime\\Route' => [
+            'name' => [
+                'contact-history',
+            ],
+            'routable' => [
+                true,
+            ],
+            'httpMethods' => [
+                [
+                    'GET',
+                ],
+            ],
+            'path' => [
+                '/contacts/{id}/history',
+            ],
+            'serviceId' => [
+                'workbench\\webb\\Http\\Route\\ContactHistory',
+            ],
+            'serviceMethod' => [
+                'get',
             ],
         ],
     ],

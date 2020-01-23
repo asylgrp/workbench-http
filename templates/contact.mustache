@@ -1,5 +1,75 @@
+{{% FILTERS }}
 {{> header }}
 
-<h1>Kontaktperson</h1>
+<h1>{{contact.name}}</h1>
+
+<table class="table">
+    <tr>
+        <td>status</td>
+        <td>{{{contact.icon}}} {{contact.status}}</td>
+    </tr>
+    <tr>
+        <td>kontonummer</td>
+        <td>{{contact.account}}<small><br>{{contact.bank}}</small></td>
+    </tr>
+    <tr>
+        <td>mail</td>
+        <td><a href="mailto:{{contact.mail}}">{{contact.mail}}</a></td>
+    </tr>
+    <tr>
+        <td>phone</td>
+        <td><a href="tel:{{contact.phone}}">{{contact.phone}}</a></td>
+    </tr>
+    <tr>
+        <td>kommentar</td>
+        <td>{{{contact.comment|nl2br}}}</td>
+    </tr>
+</table>
+
+<a data-trimmings-inline="from: main, to: main, updateLocation: true" href="{{contact.links.edit.href}}">
+    <button type="button" class="btn btn-secondary">
+        {{{contact.links.edit.icon}}}&nbsp;&nbsp;redigera
+    </button>
+</a>
+
+<section class="wb-margin-top">
+    <h3>Ansökningar</h3>
+    <p>...</p>
+</section>
+
+<section class="wb-margin-top">
+    <h3>Ny ansökan</h3>
+    <p>...</p>
+</section>
+
+<section class="wb-margin-top">
+    <h3>Beviljade utbetalningar</h3>
+    <div class="wb-content-payouts">
+        <a data-trimmings-inline="from: main, to: .wb-content-payouts" href="{{contact.links.payouts.href}}">
+            <button type="button" class="btn btn-secondary">visa</button>
+        </a>
+    </div>
+</section>
+
+<section class="wb-margin-top">
+    <h3>Historik</h3>
+    <div class="wb-content-history">
+        <a data-trimmings-inline="from: main, to: .wb-content-history" href="{{contact.links.history.href}}">
+            <button type="button" class="btn btn-secondary">visa</button>
+        </a>
+    </div>
+</section>
+
+<section class="wb-margin-top alert alert-danger">
+    <h3>Radera</h3>
+    OBS! Detta kan inte ångras. Registrerade ansökningar raderas inte.
+    <p class="wb-margin-top">
+        <form action="{{contact.links.delete.href}}" method="post">
+            <button type="submit" class="btn btn-secondary">
+                {{{contact.links.delete.icon}}}&nbsp;&nbsp;radera kontaktperson
+            </button>
+        </form>
+    </p>
+</section>
 
 {{> footer }}
