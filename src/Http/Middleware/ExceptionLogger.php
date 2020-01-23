@@ -23,7 +23,7 @@ final class ExceptionLogger implements MiddlewareInterface
     {
         try {
             return $handler->handle($request);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->emergency(
                 "Unhandled exception: {$e->getMessage()}",
                 [

@@ -1,9 +1,9 @@
 <?php
 
-namespace workbench\webb\Storage\Yayson;
+namespace workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\ContactPersonRepository;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\ContactPersonRepository;
+use workbench\webb\Db\TransactionHandlerInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\Yaysondb;
 use hanneskod\yaysondb\Engine\FlysystemEngine;

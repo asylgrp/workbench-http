@@ -1,14 +1,6 @@
 TODO
 
 * Enkel behat för allt det här som har med contacts att göra. CRUD.
-    - så många test som jag orkar..
-
-// byta namn på Storage => Db?
-
-Update to laminas instead of zend framework
-    gäller även inroute repos såklart...
-
-catch (Throwable) till workbench-webb...
 
 * Implementera validators!
 
@@ -18,4 +10,9 @@ catch (Throwable) till workbench-webb...
     ska kunna visas om contact
     datum för created och updated osv hämtas härifrån..
 
-* KP: name ska också vara unikt när vi skapar till db!
+-----------------------------------
+
+Laminas till inroute
+    * laminas/laminas-diactoros
+    * laminas/laminas-httphandlerrunner
+    * drop in replacement, se really simple...

@@ -23,5 +23,4 @@ final class ContactPayouts extends AbstractRoute
 
         return $this->render('contact-payouts', $request, $env, []);
     }
-
 }

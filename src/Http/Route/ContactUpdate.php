@@ -47,28 +47,13 @@ final class ContactUpdate extends AbstractRoute
             'id' => $contact->getId(),
             'status' => $contact->isActive() ? self::ACTIVE : ($contact->isBlocked() ? self::BLOCKED : self::BANNED),
             'name' => $contact->getName(),
-            'account' => $contact->getAccount(),
+            'account' => $contact->getAccount()->prettyprint(),
             'mail' => $contact->getMail(),
             'phone' => $contact->getPhone(),
             'comment' => $contact->getComment(),
         ];
 
-        return $this->renderForm(
-            $request,
-            $env,
-            $data
-        );
-
-
-        return $this->render(
-            'contact-form',
-            $request,
-            $env,
-            [
-                'form:target' => $env->getUrlGenerator()->generateUrl('contact', ['id' => $contact->getId()]),
-                'form:data' => $data,
-            ]
-        );
+        return $this->renderForm($request, $env, $data);
     }
 
     /**

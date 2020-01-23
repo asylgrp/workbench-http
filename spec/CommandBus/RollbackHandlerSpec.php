@@ -7,7 +7,7 @@ namespace spec\workbench\webb\CommandBus;
 use workbench\webb\CommandBus\RollbackHandler;
 use workbench\webb\CommandBus\Rollback;
 use workbench\webb\Event\ChangesDiscarded;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\TransactionHandlerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

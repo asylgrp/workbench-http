@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace spec\workbench\webb\Storage\Yayson;
+namespace spec\workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\Yayson\YaysondbFactory;
-use workbench\webb\Storage\ContactPersonRepository;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\Yayson\YaysondbFactory;
+use workbench\webb\Db\ContactPersonRepository;
+use workbench\webb\Db\TransactionHandlerInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 
 use hanneskod\yaysondb\Yaysondb;

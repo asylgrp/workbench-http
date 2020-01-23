@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace spec\workbench\webb\Storage\Yayson;
+namespace spec\workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\Yayson\YaysonTransactionHandler;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\Yayson\YaysonTransactionHandler;
+use workbench\webb\Db\TransactionHandlerInterface;
 use hanneskod\yaysondb\Yaysondb;
 use hanneskod\yaysondb\Engine\FlysystemEngine;
 use League\Flysystem\Filesystem;

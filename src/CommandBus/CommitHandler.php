@@ -6,7 +6,7 @@ namespace workbench\webb\CommandBus;
 
 use workbench\webb\DependencyInjection\DispatcherProperty;
 use workbench\webb\Event\ChangesCommitted;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\TransactionHandlerInterface;
 
 final class CommitHandler
 {

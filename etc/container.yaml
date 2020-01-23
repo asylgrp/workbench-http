@@ -94,20 +94,20 @@ services:
         public: true
 
     Psr\Http\Message\ResponseFactoryInterface:
-        class: Zend\Diactoros\ResponseFactory
+        class: Laminas\Diactoros\ResponseFactory
         public: true
 
-    workbench\webb\Storage\Yayson\YaysondbFactory:
+    workbench\webb\Db\Yayson\YaysondbFactory:
         class: ~
         arguments: ['%env(WORKB_BASE_DIR)%/%env(WORKB_DSN)%']
 
-    workbench\webb\Storage\ContactPersonRepository:
-        class: workbench\webb\Storage\Yayson\YaysonContactPersonRepository
-        factory: ['@workbench\webb\Storage\Yayson\YaysondbFactory', createContactPersonRepository]
+    workbench\webb\Db\ContactPersonRepository:
+        class: workbench\webb\Db\Yayson\YaysonContactPersonRepository
+        factory: ['@workbench\webb\Db\Yayson\YaysondbFactory', createContactPersonRepository]
 
-    workbench\webb\Storage\TransactionHandlerInterface:
-        class: workbench\webb\Storage\Yayson\YaysonTransactionHandler
-        factory: ['@workbench\webb\Storage\Yayson\YaysondbFactory', createTransactionHandler]
+    workbench\webb\Db\TransactionHandlerInterface:
+        class: workbench\webb\Db\Yayson\YaysonTransactionHandler
+        factory: ['@workbench\webb\Db\Yayson\YaysondbFactory', createTransactionHandler]
 
     asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer:
         class: ~

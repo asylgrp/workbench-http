@@ -1,11 +1,10 @@
 <?php
 
-namespace workbench\webb\Storage\Yayson;
+namespace workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\ContactPersonRepository;
-use workbench\webb\Exception\AccountNumberAlreadyExistException;
-use workbench\webb\Exception\ContactPersonAlreadyExistException;
-use workbench\webb\Exception\ContactPersonDoesNotExistException;
+use workbench\webb\Db\ContactPersonRepository;
+use workbench\webb\Exception\DbConstraintViolationException;
+use workbench\webb\Exception\DbEntryDoesNotExistException;
 use asylgrp\decisionmaker\ContactPerson\ContactPersonInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\CollectionInterface;
@@ -27,12 +26,12 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
     }
 
     /**
-     * @throws ContactPersonDoesNotExistException If contact person can not be found
+     * @throws DbEntryDoesNotExistException If contact person can not be found
      */
     public function contactPersonFromId(string $id): ContactPersonInterface
     {
         if (!$this->collection->has($id)) {
-            throw new ContactPersonDoesNotExistException("Unable to find contact person with id $id");
+            throw new DbEntryDoesNotExistException("Unable to find contact person with id $id");
         }
 
         return $this->normalizer->denormalize($this->collection->read($id), ContactPersonInterface::class);
@@ -48,20 +47,22 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
     public function createContactPerson(ContactPersonInterface $contactPerson): void
     {
         if ($this->collection->has($contactPerson->getId())) {
-            throw new ContactPersonAlreadyExistException(
+            throw new DbConstraintViolationException(
                 "Kan ej spara kontaktperson, id {$contactPerson->getId()} finns redan i databas"
             );
         }
 
         $data = $this->normalizer->normalize($contactPerson);
 
-        $expr = y::doc(['account' => y::equals($data['account'] ?? '')]);
+        $expr = y::atLeastOne(
+            y::doc(['account' => y::equals($data['account'] ?? '')]),
+            y::doc(['name' => y::equals($data['name'] ?? '')])
+        );
 
         if ($existing = $this->collection->findOne($expr)) {
-            throw new AccountNumberAlreadyExistException(
+            throw new DbConstraintViolationException(
                 sprintf(
-                    "Kan ej spara kontaktperson, kontonummer %s finns redan hos %s",
-                    $existing['account'] ?? '',
+                    "Kan ej spara kontaktperson, kontonummer eller namn finns redan hos %s",
                     $existing['name'] ?? ''
                 )
             );
@@ -73,7 +74,7 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
     public function deleteContactPerson(ContactPersonInterface $contactPerson): void
     {
         if (!$this->collection->has($contactPerson->getId())) {
-            throw new ContactPersonDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
+            throw new DbEntryDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
         }
 
         $this->collection->delete(
@@ -84,21 +85,26 @@ final class YaysonContactPersonRepository implements ContactPersonRepository
     public function updateContactPerson(ContactPersonInterface $contactPerson): void
     {
         if (!$this->collection->has($contactPerson->getId())) {
-            throw new ContactPersonDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
+            throw new DbEntryDoesNotExistException("Kontaktperson {$contactPerson->getId()} finns inte");
         }
 
         $data = $this->normalizer->normalize($contactPerson);
 
-        $expr = y::doc([
-            'id' => y::not(y::equals($contactPerson->getId())),
-            'account' => y::equals($data['account'] ?? ''),
-        ]);
+        $expr = y::atLeastOne(
+            y::doc([
+                'id' => y::not(y::equals($contactPerson->getId())),
+                'account' => y::equals($data['account'] ?? ''),
+            ]),
+            y::doc([
+                'id' => y::not(y::equals($contactPerson->getId())),
+                'name' => y::equals($data['name'] ?? ''),
+            ])
+        );
 
         if ($existing = $this->collection->findOne($expr)) {
-            throw new AccountNumberAlreadyExistException(
+            throw new DbConstraintViolationException(
                 sprintf(
-                    "Kan ej uppdatera kontaktperson, kontonummer %s finns redan hos %s",
-                    $existing['account'] ?? '',
+                    "Kan ej uppdatera kontaktperson, kontonummer eller namn finns redan hos %s",
                     $existing['name'] ?? ''
                 )
             );

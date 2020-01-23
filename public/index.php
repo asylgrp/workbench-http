@@ -7,8 +7,8 @@ require __DIR__ . '/../vendor/autoload.php';
 use workbench\webb\DependencyInjection\ProjectServiceContainer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 
 $container = new ProjectServiceContainer;
 

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace workbench\webb\DependencyInjection;
 
-use workbench\webb\Storage\ContactPersonRepository;
+use workbench\webb\Db\ContactPersonRepository;
 
 /**
  * Use this trait to automatically inject a contact person repository object

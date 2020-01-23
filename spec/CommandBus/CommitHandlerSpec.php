@@ -7,7 +7,7 @@ namespace spec\workbench\webb\CommandBus;
 use workbench\webb\CommandBus\CommitHandler;
 use workbench\webb\CommandBus\Commit;
 use workbench\webb\Event\ChangesCommitted;
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\TransactionHandlerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -1,6 +1,6 @@
 <?php
 
-namespace workbench\webb\Storage;
+namespace workbench\webb\Db;
 
 interface TransactionHandlerInterface
 {

@@ -8,8 +8,8 @@ use workbench\webb\Utils\Validators;
 use inroutephp\inroute\Runtime\EnvironmentInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Mustache_Engine;
 use Octicons\Octicon;
 

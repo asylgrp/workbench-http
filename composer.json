@@ -46,8 +46,8 @@
         "ramsey/uuid": "^3",
         "symfony/dependency-injection": "^5",
         "twbs/bootstrap": "^4.4",
-        "zendframework/zend-diactoros": "^2.0",
-        "zendframework/zend-httphandlerrunner": "^1.0",
+        "laminas/laminas-diactoros": "^2",
+        "laminas/laminas-httphandlerrunner": "^1",
         "edwinhoksberg/octicons-php": "^1.0"
     },
     "require-dev": {

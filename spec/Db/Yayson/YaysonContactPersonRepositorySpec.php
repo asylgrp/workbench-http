@@ -2,13 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace spec\workbench\webb\Storage\Yayson;
+namespace spec\workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\Yayson\YaysonContactPersonRepository;
-use workbench\webb\Storage\ContactPersonRepository;
-use workbench\webb\Exception\AccountNumberAlreadyExistException;
-use workbench\webb\Exception\ContactPersonAlreadyExistException;
-use workbench\webb\Exception\ContactPersonDoesNotExistException;
+use workbench\webb\Db\Yayson\YaysonContactPersonRepository;
+use workbench\webb\Db\ContactPersonRepository;
+use workbench\webb\Exception\DbConstraintViolationException;
+use workbench\webb\Exception\DbEntryDoesNotExistException;
 use asylgrp\decisionmaker\ContactPerson\ContactPersonInterface;
 use asylgrp\decisionmaker\Normalizer\ContactPersonNormalizer;
 use hanneskod\yaysondb\CollectionInterface;
@@ -54,7 +53,32 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
 
         $this->createContactPerson($contact);
 
-        $this->shouldThrow(ContactPersonAlreadyExistException::class)->duringCreateContactPerson($contact);
+        $this->shouldThrow(DbConstraintViolationException::class)->duringCreateContactPerson($contact);
+    }
+
+    function it_throws_on_creation_if_name_exists(
+        ContactPersonInterface $foo,
+        ContactPersonInterface $bar,
+        $normalizer
+    ) {
+        $foo->getId()->willReturn('foo');
+        $bar->getId()->willReturn('bar');
+
+        $normalizer->normalize($foo)->willReturn([
+            'id' => 'foo',
+            'account' => 'foo',
+            'name' => 'name'
+        ]);
+
+        $normalizer->normalize($bar)->willReturn([
+            'id' => 'bar',
+            'account' => 'bar',
+            'name' => 'name'
+        ]);
+
+        $this->createContactPerson($foo);
+
+        $this->shouldThrow(DbConstraintViolationException::class)->duringCreateContactPerson($bar);
     }
 
     function it_throws_on_creation_if_account_exists(
@@ -68,16 +92,18 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $normalizer->normalize($foo)->willReturn([
             'id' => 'foo',
             'account' => 'account',
+            'name' => 'foo'
         ]);
 
         $normalizer->normalize($bar)->willReturn([
             'id' => 'bar',
             'account' => 'account',
+            'name' => 'bar'
         ]);
 
         $this->createContactPerson($foo);
 
-        $this->shouldThrow(AccountNumberAlreadyExistException::class)->duringCreateContactPerson($bar);
+        $this->shouldThrow(DbConstraintViolationException::class)->duringCreateContactPerson($bar);
     }
 
     function it_creates(ContactPersonInterface $contact, $normalizer)
@@ -87,6 +113,7 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $doc = [
             'id' => 'id',
             'account' => 'account',
+            'name' => 'name'
         ];
 
         $normalizer->normalize($contact)->willReturn($doc);
@@ -99,7 +126,7 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
 
     function it_throw_if_contact_person_does_not_exist()
     {
-        $this->shouldThrow(ContactPersonDoesNotExistException::class)->duringContactPersonFromId('does-not-exist');
+        $this->shouldThrow(DbEntryDoesNotExistException::class)->duringContactPersonFromId('does-not-exist');
     }
 
     function it_can_fetch_contact_person(ContactPersonInterface $contact, $normalizer)
@@ -109,6 +136,7 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $doc = [
             'id' => 'id',
             'account' => 'account',
+            'name' => 'name'
         ];
 
         $normalizer->normalize($contact)->willReturn($doc);
@@ -122,13 +150,13 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
     function it_throws_on_delete_unknown(ContactPersonInterface $contact)
     {
         $contact->getId()->willReturn('does-not-exist');
-        $this->shouldThrow(ContactPersonDoesNotExistException::class)->duringDeleteContactPerson($contact);
+        $this->shouldThrow(DbEntryDoesNotExistException::class)->duringDeleteContactPerson($contact);
     }
 
     function it_throws_on_update_unknown(ContactPersonInterface $contact)
     {
         $contact->getId()->willReturn('does-not-exist');
-        $this->shouldThrow(ContactPersonDoesNotExistException::class)->duringUpdateContactPerson($contact);
+        $this->shouldThrow(DbEntryDoesNotExistException::class)->duringUpdateContactPerson($contact);
     }
 
     function it_deletes(ContactPersonInterface $contact, $normalizer)
@@ -138,13 +166,14 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $normalizer->normalize($contact)->willReturn([
             'id' => 'id',
             'account' => 'account',
+            'name' => 'name'
         ]);
 
         $this->createContactPerson($contact);
 
         $this->deleteContactPerson($contact);
 
-        $this->shouldThrow(ContactPersonDoesNotExistException::class)->duringUpdateContactPerson($contact);
+        $this->shouldThrow(DbEntryDoesNotExistException::class)->duringUpdateContactPerson($contact);
     }
 
     function it_throws_on_update_if_account_exists(
@@ -160,22 +189,59 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $normalizer->normalize($foo)->willReturn([
             'id' => 'foo',
             'account' => 'foo',
+            'name' => 'foo'
         ]);
 
         $normalizer->normalize($bar)->willReturn([
             'id' => 'bar',
             'account' => 'bar',
+            'name' => 'bar'
         ]);
 
         $normalizer->normalize($bar2foo)->willReturn([
             'id' => 'bar',
             'account' => 'foo',
+            'name' => 'bar'
         ]);
 
         $this->createContactPerson($foo);
         $this->createContactPerson($bar);
 
-        $this->shouldThrow(AccountNumberAlreadyExistException::class)->duringUpdateContactPerson($bar2foo);
+        $this->shouldThrow(DbConstraintViolationException::class)->duringUpdateContactPerson($bar2foo);
+    }
+
+    function it_throws_on_update_if_name_exists(
+        ContactPersonInterface $foo,
+        ContactPersonInterface $bar,
+        ContactPersonInterface $bar2foo,
+        $normalizer
+    ) {
+        $foo->getId()->willReturn('foo');
+        $bar->getId()->willReturn('bar');
+        $bar2foo->getId()->willReturn('bar');
+
+        $normalizer->normalize($foo)->willReturn([
+            'id' => 'foo',
+            'account' => 'foo',
+            'name' => 'foo'
+        ]);
+
+        $normalizer->normalize($bar)->willReturn([
+            'id' => 'bar',
+            'account' => 'bar',
+            'name' => 'bar'
+        ]);
+
+        $normalizer->normalize($bar2foo)->willReturn([
+            'id' => 'bar',
+            'account' => 'bar',
+            'name' => 'foo'
+        ]);
+
+        $this->createContactPerson($foo);
+        $this->createContactPerson($bar);
+
+        $this->shouldThrow(DbConstraintViolationException::class)->duringUpdateContactPerson($bar2foo);
     }
 
     function it_updates(
@@ -191,22 +257,25 @@ class YaysonContactPersonRepositorySpec extends ObjectBehavior
         $normalizer->normalize($bar)->willReturn([
             'id' => 'bar',
             'account' => 'bar',
+            'name' => 'bar'
         ]);
 
         $normalizer->normalize($bar2foo)->willReturn([
             'id' => 'bar',
             'account' => 'foo',
+            'name' => 'foo'
         ]);
 
         $normalizer->normalize($foo)->willReturn([
             'id' => 'foo',
             'account' => 'foo',
+            'name' => 'foo'
         ]);
 
         $this->createContactPerson($bar);
 
         $this->updateContactPerson($bar2foo);
 
-        $this->shouldThrow(AccountNumberAlreadyExistException::class)->duringCreateContactPerson($foo);
+        $this->shouldThrow(DbConstraintViolationException::class)->duringCreateContactPerson($foo);
     }
 }

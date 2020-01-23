@@ -7,7 +7,7 @@ namespace spec\workbench\webb\CommandBus;
 use workbench\webb\CommandBus\CreateContactPersonHandler;
 use workbench\webb\CommandBus\CreateContactPerson;
 use workbench\webb\Event\ContactPersonCreated;
-use workbench\webb\Storage\ContactPersonRepository;
+use workbench\webb\Db\ContactPersonRepository;
 use asylgrp\decisionmaker\ContactPerson\ContactPersonInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;

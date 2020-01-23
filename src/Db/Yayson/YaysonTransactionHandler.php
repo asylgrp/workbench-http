@@ -1,8 +1,8 @@
 <?php
 
-namespace workbench\webb\Storage\Yayson;
+namespace workbench\webb\Db\Yayson;
 
-use workbench\webb\Storage\TransactionHandlerInterface;
+use workbench\webb\Db\TransactionHandlerInterface;
 use hanneskod\yaysondb\Yaysondb;
 
 final class YaysonTransactionHandler implements TransactionHandlerInterface

@@ -23,7 +23,7 @@ final class ExceptionEndpoint implements MiddlewareInterface
     {
         try {
             return $handler->handle($request);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->responseFactory->createResponse(500, 'Internal Server Error');
         }
     }
