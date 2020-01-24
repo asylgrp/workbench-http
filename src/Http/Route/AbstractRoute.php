@@ -51,7 +51,8 @@ abstract class AbstractRoute
         string $templateName,
         ServerRequestInterface $request,
         EnvironmentInterface $env,
-        array $data = []
+        array $data = [],
+        int $responseCode = 200
     ): ResponseInterface {
         $data['alert:error'] ??= [];
 
@@ -112,6 +113,6 @@ abstract class AbstractRoute
             ],
         ];
 
-        return new HtmlResponse($this->mustache->render($templateName, $data));
+        return new HtmlResponse($this->mustache->render($templateName, $data), $responseCode);
     }
 }

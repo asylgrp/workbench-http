@@ -12,24 +12,29 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asylgrp/economix.git",
-                "reference": "966049069a1c1925d802ad85c8cd25078aecd15f"
+                "reference": "206621c885fdf95018edb5c4fd998edbd238d7ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asylgrp/economix/zipball/966049069a1c1925d802ad85c8cd25078aecd15f",
-                "reference": "966049069a1c1925d802ad85c8cd25078aecd15f",
+                "url": "https://api.github.com/repos/asylgrp/economix/zipball/206621c885fdf95018edb5c4fd998edbd238d7ab",
+                "reference": "206621c885fdf95018edb5c4fd998edbd238d7ab",
                 "shasum": ""
             },
             "require": {
-                "byrokrat/accounting": "^1",
-                "byrokrat/amount": "^2",
                 "byrokrat/banking": "^2",
                 "ext-bcmath": "*",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
                 "lcobucci/clock": "^1",
+                "moneyphp/money": "^3",
                 "php": ">=7.4",
                 "symfony/serializer": "^5"
+            },
+            "require-dev": {
+                "byrokrat/accounting": "^1"
+            },
+            "suggest": {
+                "byrokrat/accounting": "Allows parsing match data from raw bookkeeping"
             },
             "type": "library",
             "autoload": {
@@ -63,7 +68,7 @@
                 "source": "https://github.com/asylgrp/economix/tree/master",
                 "issues": "https://github.com/asylgrp/economix/issues"
             },
-            "time": "2019-12-28T22:50:09+00:00"
+            "time": "2020-01-24T13:03:50+00:00"
         },
         {
             "name": "aura/router",
@@ -113,100 +118,6 @@
                 "routing"
             ],
             "time": "2017-03-02T16:34:47+00:00"
-        },
-        {
-            "name": "byrokrat/accounting",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/byrokrat/accounting.git",
-                "reference": "e54aeba033b0f8d79e4e9b6650de91ad85817ca3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/byrokrat/accounting/zipball/e54aeba033b0f8d79e4e9b6650de91ad85817ca3",
-                "reference": "e54aeba033b0f8d79e4e9b6650de91ad85817ca3",
-                "shasum": ""
-            },
-            "require": {
-                "byrokrat/amount": "^2",
-                "php": "^7.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "byrokrat\\accounting\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Hannes Forsgård",
-                    "email": "hannes.forsgard@fripost.org"
-                }
-            ],
-            "description": "Analysis and generation of bookkeeping data according to Swedish standards",
-            "homepage": "https://github.com/byrokrat/accounting",
-            "keywords": [
-                "Accounting",
-                "SIE",
-                "SIE4",
-                "bookkeeping"
-            ],
-            "time": "2019-01-23T14:25:33+00:00"
-        },
-        {
-            "name": "byrokrat/amount",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/byrokrat/amount.git",
-                "reference": "d9437c54308fbf75f764592b3176ed17df999078"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/byrokrat/amount/zipball/d9437c54308fbf75f764592b3176ed17df999078",
-                "reference": "d9437c54308fbf75f764592b3176ed17df999078",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bcmath": "*",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "alcohol/iso4217": "^3",
-                "ext-intl": "*",
-                "phpunit/phpunit": "^6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "byrokrat\\amount\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Unlicense"
-            ],
-            "authors": [
-                {
-                    "name": "Hannes Forsgård",
-                    "email": "hannes.forsgard@fripost.org"
-                }
-            ],
-            "description": "Value objects for monetary amounts",
-            "homepage": "https://github.com/byrokrat/amount",
-            "keywords": [
-                "currency",
-                "economics",
-                "monetary amount",
-                "money"
-            ],
-            "abandoned": "moneyphp/money",
-            "time": "2019-08-20T11:11:43+00:00"
         },
         {
             "name": "byrokrat/banking",

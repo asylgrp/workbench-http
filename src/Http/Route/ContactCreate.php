@@ -69,7 +69,8 @@ final class ContactCreate extends AbstractRoute
                     'form:target' => $env->getUrlGenerator()->generateUrl('contacts'),
                     'form:data' => $result->getValidData(),
                     'form:error' => $result->getErrors(),
-                ]
+                ],
+                400
             );
         }
 
@@ -104,7 +105,8 @@ final class ContactCreate extends AbstractRoute
                     'alert:error' => ["Kontaktperson kunde ej sparas.\n" . $e->getMessage()],
                     'form:target' => $env->getUrlGenerator()->generateUrl('contacts'),
                     'form:data' => $input,
-                ]
+                ],
+                400
             );
         }
     }

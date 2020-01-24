@@ -78,7 +78,8 @@ final class ContactUpdate extends AbstractRoute
                 $env,
                 $result->getValidData(),
                 ["Kontaktperson kunde ej sparas, se felmeddelanden nedan"],
-                $result->getErrors()
+                $result->getErrors(),
+                400
             );
         }
 
@@ -125,7 +126,9 @@ final class ContactUpdate extends AbstractRoute
                 $request,
                 $env,
                 $input,
-                ["Kontaktperson kunde ej sparas.\n" . $e->getMessage()]
+                ["Kontaktperson kunde ej sparas.\n" . $e->getMessage()],
+                [],
+                400
             );
         }
     }
@@ -140,7 +143,8 @@ final class ContactUpdate extends AbstractRoute
         EnvironmentInterface $env,
         array $data,
         array $errorMessages = [],
-        array $formErrors = []
+        array $formErrors = [],
+        int $statusCode = 200
     ): ResponseInterface {
         $id = Validators::idValidator()->validate($request->getAttribute('id'));
 
@@ -163,7 +167,8 @@ final class ContactUpdate extends AbstractRoute
                 'form:target' => $env->getUrlGenerator()->generateUrl('contact', ['id' => $id]),
                 'form:data' => $data,
                 'form:error' => $formErrors,
-            ]
+            ],
+            $statusCode
         );
     }
 }

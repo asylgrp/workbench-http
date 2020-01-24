@@ -36,22 +36,10 @@ final class ContactRead extends AbstractRoute
             'phone' => $contact->getPhone(),
             'comment' => $contact->getComment(),
             'links' => [
-                'edit' => [
-                    'icon' => Octicon::pencil(),
-                    'href' => $env->getUrlGenerator()->generateUrl('edit-contact-form', ['id' => $contact->getId()]),
-                ],
-                'delete' => [
-                    'icon' => Octicon::trashcan(),
-                    'href' => $env->getUrlGenerator()->generateUrl('contact-delete', ['id' => $contact->getId()]),
-                ],
-                'history' => [
-                    'icon' => '',
-                    'href' => $env->getUrlGenerator()->generateUrl('contact-history', ['id' => $contact->getId()]),
-                ],
-                'payouts' => [
-                    'icon' => '',
-                    'href' => $env->getUrlGenerator()->generateUrl('contact-payouts', ['id' => $contact->getId()]),
-                ],
+                'edit' => $env->getUrlGenerator()->generateUrl('edit-contact-form', ['id' => $contact->getId()]),
+                'delete' => $env->getUrlGenerator()->generateUrl('contact-delete', ['id' => $contact->getId()]),
+                'history' => $env->getUrlGenerator()->generateUrl('contact-history', ['id' => $contact->getId()]),
+                'payouts' => $env->getUrlGenerator()->generateUrl('contact-payouts', ['id' => $contact->getId()]),
             ]
         ];
 
